@@ -95,28 +95,7 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
       console.log("hahahahaha");
     e.preventDefault(); //JQuery prevent default
   }
-  function handleSquareDragOver(e) {
-    // console.log("hahahahaha");
-      e = e || window.event;
-    if (e.preventDefault) {
-      e.preventDefault(); // Necessary. Allows us to drop.
-    }
-    this.classList.add('over');
-    // e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
 
-    // return false;
-  }
-  function handleSquareDragLeave(e) {
-    console.log("hahahahaha");
-      e = e || window.event;
-    // if (e.preventDefault) {
-    //   e.preventDefault(); // Necessary. Allows us to drop.
-    // }
-    this.classList.remove('over');
-    // e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
-
-    // return false;
-  }
   var dragging = function dragElement(elmnt) {
   // var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
@@ -186,7 +165,7 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
     // document.onmousemove = null;
   }
 }
-class Chessboard {
+var Chessboard = class Chessboard {
 	 constructor(height, width) {
     this.height = height;
     this.width = width;
@@ -222,13 +201,16 @@ class Chessboard {
 	  
 	  
 	  
-       square.ondragover = stopDefault;
-     // square.ondragover = handleSquareDragOver;
-      //square.ondragleave = handleSquareDragLeave;
+      //  square.ondragover = stopDefault;
+      square.ondragover = this.handleSquareDragOver;
+      square.ondragleave = this.handleSquareDragLeave;
+      square.ondrop = this.handleSquareDragDrop;
       var test = letters[i % 8] + (8 - parseInt(i/8));
       square.id = test; /*Generating correct id for each square*/
       // dragElement(test);
+      //Board has 64 childs: squares
       document.getElementById("mainChessBoard").appendChild(square)
+      //Correct colors for each square
       .style.backgroundColor = parseInt((i / 8) + i)
       % 2 == 0 ? 'white' : '#ababab';
       var number = document.createTextNode(test);
@@ -380,10 +362,10 @@ class Chessboard {
 
 
         elem.className = "piece unselectable";
-		elem.classList.add('piece');
-		elem.style.height = this.height/8 + 'px';
-		elem.style.width = this.width/8 + 'px';
-		elem.classList.add('unselectable');
+        //elem.classList.add('piece');
+        elem.style.height = this.height/8 + 'px';
+        elem.style.width = this.width/8 + 'px';
+        elem.classList.add('unselectable');
 
         //              document.write(id);
         //              document.write($(id).html());
@@ -398,12 +380,44 @@ class Chessboard {
     //
   }
    newGame(){
-    // var list = document.getElementById("mainChessBoard");
-    // list.removeChild(list.childNodes());
+    //Let's remove all the pieces from the Chessboard. We have own function for it
     document.getElementsByClassName("piece").remove();
 
     // addPieces();
     this.createBoard();
+  }
+  handleSquareDragOver(e) {
+    // console.log("hahahahaha");
+      e = e || window.event;
+    if (e.preventDefault) {
+      e.preventDefault(); // Necessary. Allows us to drop.
+    }
+  //  this.sq_borderwidth = 4;
+   this.classList.add('over');
+   // this.style.height = ((this.height/8)-(2*this.sq_borderwidth)) + 'px';
+	  // console.log(square.style.height);
+	//  this.style.width = ((this.height/8)-(2*this.sq_borderwidth)) + 'px';
+    // e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+
+    // return false;
+  }
+  handleSquareDragLeave(e) {
+    console.log("hahahahaha");
+      e = e || window.event;
+    // if (e.preventDefault) {
+    //   e.preventDefault(); // Necessary. Allows us to drop.
+    // }
+    this.classList.remove('over');
+    // e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+
+    // return false;
+  }
+  handleSquareDragDrop(e) {
+    e = e || window.event;
+    // if (e.preventDefault) {
+    //   e.preventDefault(); // Necessary. Allows us to drop.
+    // }
+    this.classList.remove('over');
   }
 	
 }
