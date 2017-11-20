@@ -309,19 +309,19 @@ img.resize {
 
 .square
 {
-    width:96px;
-    height:96px;
     float:left;
-    /*position: absolute;*/
-    /*display: inline-block;*/
     z-index: -1;
-    /*padding: 2px;*/
-    /*position: relative;*/
-    /*border-radius: 2% 2% 2% 2%;*/
-    /*vertical-align: top;*/
-    border: 2px solid #111;
+    border: 2px solid #8d7878;
+}
+.square.over {
+  border: 2px solid rgb(238, 191, 36) !important;
+}
+.square.legal {
+  width: 92px !important;
+  height: 92px !important;
+  /* background-color: red !important; */
+  border: 4px solid black !important;
 
-    /* Make elements draggable in old WebKit */
 }
 .piece {
 
@@ -331,13 +331,6 @@ img.resize {
   margin: auto;
   position: absolute;
   cursor: move;
-/*bottom: 50%;*/
-/*top: 50%;*/
-/*-webkit-transform: translateX(-50%);
--ms-transform: translateX(-50%);
-transform: translateX(-50%);*/
-
-/*Prevent image selecting while dragging mouse*/
 /* Make elements draggable in old WebKit */
 -khtml-user-drag: element;
 -webkit-user-drag: element;
@@ -354,16 +347,4 @@ transform: translateX(-50%);*/
   user-select: none;
 
 
-}
-.square.over {
-  width:92px;
-  height:92px;
-  float:left;
-  background-color: grey;
-  /*padding: 2px;*/
-  /*position: absolute;*/
-  /*display: inline-block;*/
-  z-index: -1;
-  border: 2px solid rgb(35, 196, 35);
-    /*border: 3px solid red;*/
 }

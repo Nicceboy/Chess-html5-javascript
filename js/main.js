@@ -50,33 +50,7 @@ function muteAudio(){
     }
 
   }
-  function createBoard() {
-
-
-
-    for (var i=0; i< 64; i++){
-      //            var idnumber = 1;
-      var letters = "abcdefgh";
-      square = document.createElement("div");
-
-      square.classList.add('square', 'unselectable');
-      square.ondragover = stopDefault;
-      // square.ondragover = handleSquareDragOver;
-      // square.ondragleave = handleSquareDragLeave;
-      test = letters[i % 8] + (8 - parseInt(i/8));
-      square.id = test; /*Generating correct id for each square*/
-      // dragElement(test);
-      document.getElementById("mainChessBoard").appendChild(square)
-      .style.backgroundColor = parseInt((i / 8) + i)
-      % 2 == 0 ? 'white' : '#ababab';
-      number = document.createTextNode(test);
-      // square.appendChild(number);
-      //            #ababab
-    }
-    addPieces();
-    document.getElementById("mainChessBoard").style.display = 'block';
-
-  }
+ 
 
  
   Element.prototype.remove = function() {
@@ -96,79 +70,14 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
     e.preventDefault(); //JQuery prevent default
   }
 
-  var dragging = function dragElement(elmnt) {
-  // var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-
-    // $('body').on('mousedown mousemove', '.' + "piece", stopDefault); //prevet image drag
-  // if (document.getElementById(elmnt.id)) {
-    // document.write(elmnt);
-    /* if present, the header is where you move the DIV from:*/
-    elmnt.ondragstart = elementDragStart;
-    document.ondrop = closeDragElement;
-    // document.ondragenter = handleDragEnter;
-
-    // document.ondragover = handleDragOver;
-  // }
-  // else {
-  //   /* otherwise, move the DIV from anywhere inside the DIV:*/
-  //   elmnt.onmousedown = dragMouseDown;
-  // }
-
-  function dragMouseDown(e) {
-    e = e || window.event;
 
 
-  }
-
-
-  function elementDragStart(e) {
-    e = e || window.event;
-    // document.write(e);
-      // this.style.opacity = '0.2';  // this / e.target is the source node.
-    e.dataTransfer.setData("Text", e.target.id);
-	e.dataTransfer.effectAllowed = "move";
-    // calculate the new cursor position:
-    // pos1 = pos3 - e.clientX;
-    // pos2 = pos4 - e.clientY;
-    // pos3 = e.clientX;
-    // pos4 = e.clientY;
-    // // set the element's new position:
-    // elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    // elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-  }
-
-
-  function handleDragEnter(e) {
-      e = e || window.event;
-    // this / e.target is the current hover target.
-    // this.classList.add('over');
-  }
-
-  function closeDragElement(e) {
-    /* stop moving when mouse button is released:*/
-    e.preventDefault();
-    var data = e.dataTransfer.getData("Text");
-    // document.write(e.target.id);
-    if (e.target.id != (document.getElementById(data).id) && e.target.classList.contains("square")){
-    e.target.appendChild(document.getElementById(data));
-  }
-  else if (e.target.getAttribute("side") != document.getElementById(data).getAttribute("side")) {
-    e.target.parentElement.appendChild(document.getElementById(data));
-    e.target.remove();
-
-  }
-  //
-    // e.target.side != document.getElementById(data).side)
-    // document.getElementById("demo").innerHTML = "The p element was dropped";
-
-    // document.onmouseup = null;
-    // document.onmousemove = null;
-  }
-}
 var Chessboard = class Chessboard {
 	 constructor(height, width) {
+     this.letters = "abcdefgh";
     this.height = height;
     this.width = width;
+    var self = this;
 	// var $tempobj = $("<div>").css('display', 'none').addClass("square");
     // $("body").append($tempobj);
 	// console.log($tempobj.css("border-width"));
@@ -181,15 +90,15 @@ var Chessboard = class Chessboard {
 	
 	
 	this.createBoard();
-	
-	
-	
+ // console.log(self);
+
   }
+
     createBoard() {
 
     for (var i=0; i< 64; i++){
       //            var idnumber = 1;
-      var letters = "abcdefgh";
+
       var square = document.createElement("div");
       square.classList.add('square');
 	  
@@ -201,18 +110,20 @@ var Chessboard = class Chessboard {
 	  
 	  
 	  
-      //  square.ondragover = stopDefault;
-      square.ondragover = this.handleSquareDragOver;
+     //  square.ondragover = stopDefault;
+     square.ondragover = this.handleSquareDragOverDefault;
       square.ondragleave = this.handleSquareDragLeave;
       square.ondrop = this.handleSquareDragDrop;
-      var test = letters[i % 8] + (8 - parseInt(i/8));
+      var test = this.letters[i % 8] + (8 - parseInt(i/8));
       square.id = test; /*Generating correct id for each square*/
       // dragElement(test);
       //Board has 64 childs: squares
-      document.getElementById("mainChessBoard").appendChild(square)
-      //Correct colors for each square
-      .style.backgroundColor = parseInt((i / 8) + i)
+      square.style.backgroundColor = parseInt((i / 8) + i)
       % 2 == 0 ? 'white' : '#ababab';
+      square.setAttribute("color", parseInt((i / 8) + i)
+      % 2 == 0 ? 'white' : 'black');
+
+      document.getElementById("mainChessBoard").appendChild(square);
       var number = document.createTextNode(test);
       // square.appendChild(number);
       //            #ababab
@@ -223,7 +134,7 @@ var Chessboard = class Chessboard {
   }
   addPieces() {
 
-    var letters = "abcdefgh"; //valid letters in board
+    //var letters = "abcdefgh"; //valid letters in board
     //
 
     var wpawn = "chesspieces/Chess_plt45.svg";
@@ -271,7 +182,7 @@ var Chessboard = class Chessboard {
 
         // var id = '#';
         // document.write("hahahahah");
-        var id =  letters[i] + (x + 1);
+        var id =  this.letters[i] + (x + 1);
         // document.write(id);
         var elem = document.createElement("img");
 
@@ -360,21 +271,16 @@ var Chessboard = class Chessboard {
         }
 
 
-
-        elem.className = "piece unselectable";
-        //elem.classList.add('piece');
+        //Properties of piece
+        elem.className = "piece unselectable"; 
         elem.style.height = this.height/8 + 'px';
         elem.style.width = this.width/8 + 'px';
-        elem.classList.add('unselectable');
 
-        //              document.write(id);
-        //              document.write($(id).html());
-        dragging(elem);
+;
+        this.dragElement(elem);
         var hmm = document.getElementById(id);
-        // dragElement(hmm);
         hmm.appendChild(elem);
-        // dragElement(hmm);
-        // $(id).html(elem);
+
       }
     }
     //
@@ -386,41 +292,121 @@ var Chessboard = class Chessboard {
     // addPieces();
     this.createBoard();
   }
+
+
+
+  handleSquareDragOverDefault() { //Just for coloring targeted square
+  if(!this.classList.contains("over")){
+   this.classList.add('over');
+  }
+  }
   handleSquareDragOver(e) {
-    // console.log("hahahahaha");
-      e = e || window.event;
-    if (e.preventDefault) {
+    e = e || window.event;
+     if (e.preventDefault) {
       e.preventDefault(); // Necessary. Allows us to drop.
     }
-  //  this.sq_borderwidth = 4;
-   this.classList.add('over');
-   // this.style.height = ((this.height/8)-(2*this.sq_borderwidth)) + 'px';
-	  // console.log(square.style.height);
-	//  this.style.width = ((this.height/8)-(2*this.sq_borderwidth)) + 'px';
-    // e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
 
-    // return false;
+   this.classList.add('over');
+
   }
   handleSquareDragLeave(e) {
-    console.log("hahahahaha");
-      e = e || window.event;
-    // if (e.preventDefault) {
-    //   e.preventDefault(); // Necessary. Allows us to drop.
-    // }
-    this.classList.remove('over');
-    // e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
 
-    // return false;
-  }
-  handleSquareDragDrop(e) {
-    e = e || window.event;
-    // if (e.preventDefault) {
-    //   e.preventDefault(); // Necessary. Allows us to drop.
-    // }
     this.classList.remove('over');
+
+  }
+  handleSquareDragDrop() {
+
+    this.classList.remove('over'); // Remove 'over' effect from square
+   
+  }
+  dragElement(elmnt) { // Set different methods for different situations
+      elmnt.ondragstart = this.elementDragStart.bind(this);
+      elmnt.ondragend = this.elementDragEnd;
+      document.ondrop = this.closeDragElement;
+  }
+  
+  
+  elementDragStart(e) {
+
+    e = e || window.event;
+    e.dataTransfer.setData("Text", e.target.id);
+    e.dataTransfer.effectAllowed = "move";
+   this.isLegalMove(e.target.parentElement); // Check legal moves from starting position
+
+  }
+  
+    elementDragEnd(e) {
+      var squares = document.getElementsByClassName("square");
+      
+          for (var i = 0; i < squares.length; i++){ //Reset allowed actions
+      
+           squares[i].ondragover = this.handleSquareDragOverDefault
+           squares[i].classList.remove("legal");
+          }
+    }
+  
+    closeDragElement(e) {
+      /* stop moving when mouse button is released:*/
+      e.preventDefault();
+      var data = e.dataTransfer.getData("Text");
+      // document.write(e.target.id);
+      if (e.target.id != (document.getElementById(data).id) && e.target.classList.contains("square")){
+      e.target.appendChild(document.getElementById(data));
+    }
+    else if (e.target.getAttribute("side") != document.getElementById(data).getAttribute("side")) {
+      e.target.parentElement.appendChild(document.getElementById(data));
+      e.target.remove();
+  
+    }
+    }
+    isLegalMove (e) {
+      var startPosition;
+   
+         var current = e.id.match(/[a-zA-Z]+|[0-9]+/g);
+         var horizontal = current[0];
+         var vertical = current[1];
+         var new_horiz;
+         var new_vert;
+   
+   
+         // Rules, white soldier
+         if (e.children[0].getAttribute("type") == "wpawn"){
+           if (current[1] == "2"){
+             console.log("Starting position")
+            startPosition = true;
+           }else {
+             startPosition = false;
+           }
+        //   console.log(!(document.getElementById(current[0] + (parseInt(current[1]) + 1)).hasChildNodes()));
+           if (!document.getElementById(current[0] + (parseInt(current[1]) + 1)).hasChildNodes()) {
+             current[1] = parseInt(current[1]) + 1;
+             document.getElementById(current[0] + current[1]).classList.add('legal');
+             document.getElementById(current[0] + current[1]).ondragover = this.handleSquareDragOver;
+             // document.getElementById(current[0] + current[1]).classList.remove("square");
+           
+            //$(document.getElementById(current[0] + current[1])).css('backgroundColor', 'red');
+             console.log(document.getElementById(current[0] + current[1]));
+             if (!document.getElementById(current[0] + (parseInt(current[1]) + 1)).hasChildNodes() && startPosition)
+               current[1] = parseInt(current[1]) + 1;
+               document.getElementById(current[0] + current[1]).classList.add('legal');
+             document.getElementById(current[0] + current[1]).ondragover = this.handleSquareDragOver;
+             // document.getElementById(current[0] + current[1]).classList.remove("square");
+          
+            // $(document.getElementById(current[0] + current[1])).css('backgroundColor', 'red');
+             
+         }
+       
+         }
+         if (e.children[0].getAttribute("type") == "knight"){
+             console.log(this.letters.indexOf(horizontal));
+             // document.getElementById(current[])
+   
+         }
+       }
+
   }
 	
-}
+
 //openNav();
 // newGame();
 var chesstable = new Chessboard(800, 800);
