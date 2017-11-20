@@ -317,8 +317,11 @@ img.resize {
   border: 2px solid rgb(238, 191, 36) !important;
 }
 .square.legal {
+  float:left;
+  z-index: -1;
   width: 92px !important;
   height: 92px !important;
+  margin: auto !important;
   /* background-color: red !important; */
   border: 4px solid black !important;
 

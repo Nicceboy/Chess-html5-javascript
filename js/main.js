@@ -367,6 +367,7 @@ var Chessboard = class Chessboard {
          var vertical = current[1];
          var new_horiz;
          var new_vert;
+         var new_pos;
    
    
          // Rules, white soldier
@@ -397,8 +398,52 @@ var Chessboard = class Chessboard {
          }
        
          }
+ 
          if (e.children[0].getAttribute("type") == "knight"){
-             console.log(this.letters.indexOf(horizontal));
+          var knight_moves = {
+            upleft: [-1, 2],
+            upright: [1, 2],
+            rightup: [2, 1],
+            rightdown: [2, -1],
+            downright: [1, -2],
+            downleft: [-1, -2],
+            leftdown: [-2, -1],
+            leftup: [-2, 1]
+         };
+
+          
+    
+            //  for (const prop in knight_moves) {
+            //   // console.log(`${knight_moves[prop]}`);
+            //   // knight_movesprop;
+            //   console.log(knight_moves[prop]);
+            // }
+
+            for (const i in knight_moves){
+             try {
+             new_horiz = this.letters[this.letters.indexOf(horizontal) + knight_moves[i][0]];
+             }catch (e){
+               console.log(e + " " + "outofbound");
+
+             }
+             new_vert = parseInt(vertical) + knight_moves[i][1];
+             new_pos = new_horiz + new_vert;
+             var position = document.getElementById(new_pos);
+             if ( position != null && !position.hasChildNodes()){
+  
+             position.classList.add('legal');
+            position.ondragover = this.handleSquareDragOver;
+             }
+              if (position != null && position.hasChildNodes()){
+               console.log(position.children[0].getAttribute("side"));
+              if (position.children[0].getAttribute("side") != e.children[0].getAttribute("side")){
+                position.classList.add('legal');
+                position.ondragover = this.handleSquareDragOver;
+              }
+            }
+           }
+           
+
              // document.getElementById(current[])
    
          }
