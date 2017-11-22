@@ -24,17 +24,21 @@
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
       background-color: #4CAF50;
+      
 }
 
 body, html {
   font-family: Ubuntu-R, serif;
+
   -webkit-font-smoothing: antialiased !important;
+  
   text-rendering: optimizeLegibility !important;
 /* position: absolute; */
 /* overflow: hidden; */
    /*background: rgba(1, 1, 1, 0.3);*/
    /*background-repeat: repeat;*/
 }
+
 h2 {
   text-decoration: blink;
   text-align: center;
@@ -191,6 +195,7 @@ img.resize {
 
 }
 .savegame select {
+  -webkit-appearance: none;
   color: #818181;
   font-size: 16px;
   /*height:50px;*/
@@ -202,34 +207,29 @@ img.resize {
   border-color: #4CAF50;
   background-color: #111;
   border-radius: 5% 5% 5% 5%;
-  outline: none;
+  /* outline: none !important; */
+  -webkit-appearance:none !important;
+}
+.savegame option {
+  -webkit-appearance:none !important;
+}
 
+.savegame option:checked {
+  box-shadow: 10px 10px 10px 10px #111 inset;
+  border: 0;
+  color: #111 !important;
+  outline: none !important;
 }
-.savegame select:focus {
-  color: #818181;
-  /*height:50px;*/
-  /*width:100%;*/
-  /*overflow:hidden;*/
-  /*overflow-y:scroll;*/
-  border: solid 2px;
-  /*padding: 15px;*/
-  border-color: #4CAF50;
-  background-color: #111;
-  border-radius: 5% 5% 5% 5%;
-}
+
 
 .savegame option:hover {
-  background-color: green;
+  text-decoration: underline;
+  cursor: pointer;
+  outline: none !important;
+  /* background-color: #4CAF50; */
    /*text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);*/
 }
-.savegame option:active {
-  background-color : green;
-   /*text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);*/
-}
-.savegame option:checked{
-  background-color : green;
-   /*text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);*/
-}
+
 #setting {
 
 }
@@ -248,6 +248,8 @@ img.resize {
 .settings.newgame select {
   -webkit-appearance: none;
   -moz-appearance: none;
+  text-align: right !important;
+  text-align-last: right;
   text-indent: 1px;
   text-overflow: '';
   /* background-color: #4CAF50; */
@@ -257,15 +259,30 @@ img.resize {
   border: 0;
   color: #4CAF50;
   max-width: 40%;
+  cursor: pointer;
 }
-.settings.newgame select::focus{
-  background-color: #111111;
+
+.settings.newgame option:checked {
+  box-shadow: 10px 10px 10px 10px #111 inset;
+  border: 0;
+  color: #111 !important;
+  outline: none !important;
 }
-settings.newgame select::-ms-expand {
+
+
+.settings.newgame option:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  outline: none !important;
+  /* background-color: #4CAF50; */
+   /*text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);*/
+}
+
+.settings.newgame select::-ms-expand {
   display: none;
 }
 .row_wrapper {
-  margin: 4px 0px 0px 0px; /*Extra space between rows*/
+  margin: 2px 0px 2px 0px; /*Extra space between rows*/
 }
 .okbutton{
   position: relative;

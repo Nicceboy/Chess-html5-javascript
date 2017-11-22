@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="background-image"></div>
-  <div id="mySidenav" class="sidenav" >
+  <div id="mySidenav" class="sidenav unselectable" >
     <!-- <h2 class="h2menu"><u>Menu</u></h2> -->
     <a class="closebtn" onclick="closeNav()">&times;</a>
 
@@ -27,7 +27,7 @@
       <!-- <input type="button" class="menubtn" onclick="ngameOpt('#savegame')" value="Save Game"> -->
     <div id="savegame" class="savegame newgame">
     <select size="3" >
-      <option value "savegame1" selected>Savegame 1 </option>
+      <option value "savegame1" >Savegame 1 </option>
       <option value "savegame2">Savegame 2 </option>
       <option value "savegame3">Savegame 3 </option>
       <option value "savegame4">Savegame 4 </option>
@@ -55,7 +55,7 @@
         <option value "difficulty3">Hard </option>
        </select><br></div>
        <div class="row_wrapper">
-       <span style="float: left !important;"> Volume: </span><span id="VolumeValue"; ></span>%<div id = "SliderPopUp" >
+       <span style="float: left !important;"> Volume: </span><span id="VolumeValue"; ></span><div id = "SliderPopUp" >
          <input type="range" min="1" max="100" value="50" class="slider" id="VolumeSlider" ></div>
         </div>
     </div>
@@ -73,6 +73,13 @@
 
   <h2>MasterChesser 2017</h2>
   <p>You are in game.</p>
+  <div id="test" >
+      <select size="3" >
+        <option value "savegame1">Savegame 1 </option>
+        <option value "savegame2">Savegame 2 </option>
+        <option value "savegame3">Savegame 3 </option>
+        <option value "savegame4">Savegame 4 </option>
+       </select> </div>
   <!-- <div id="svgContainer"></div> -->
   <span style="font-size:30px;cursor:pointer; padding-left: 25%" onclick="openNav()">&#9776; open</span>
   <div id="mainChessBoard">

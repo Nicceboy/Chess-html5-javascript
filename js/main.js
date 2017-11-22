@@ -26,14 +26,15 @@ function ngameOpt(test) {
     document.getElementById('SliderPopUp').classList.remove("show"); //Close volume slider
   }
 }
+
 function addSlider(){
 
     var slider = document.getElementById("VolumeSlider");
     var output = document.getElementById("VolumeValue");
-    output.innerHTML = slider.value;
+    output.innerHTML = slider.value + "%";
     // $('input').popup();
     slider.oninput = function () {
-    output.innerHTML = this.value;
+    output.innerHTML = this.value + "%";
     document.getElementById('background_audio').volume = this.value/100; //Adjust backgroound volume
   
   
