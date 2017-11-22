@@ -2,97 +2,103 @@
 <html>
 
 <head>
-  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1 " http-equiv="imagetoolbar" content="no">
-  <title>MasterChesser</title>
- <link rel="stylesheet" type="text/css" href="css/style.css">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1 " http-equiv="imagetoolbar"
+          content="no">
+    <title>MasterChesser</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 
 </head>
 <body>
-  <div class="background-image"></div>
-  <div id="mySidenav" class="sidenav unselectable" >
+<div class="background-image"></div>
+<div id="mySidenav" class="sidenav unselectable">
     <!-- <h2 class="h2menu"><u>Menu</u></h2> -->
     <a class="closebtn" onclick="closeNav()">&times;</a>
 
     <a id="haha" onclick="ngameOpt('#ngopt')">New Game </a>
     <!-- <input type="button" class="menubtn" onclick="ngameOpt('#ngopt')" value="New Game"> -->
     <div id="ngopt" class="newgame">
-      <form >
-        VS. A.I  <input type="radio" name="ngame" value="vsai" checked><br>
-        VS. Player  <input type="radio" name="ngame" value="vsplayer"><br><br>
-        <input type="button" class="okbutton" onclick="chesstable.newGame()" value="Start!">
-      </form>
+        <form>
+            VS. A.I <input type="radio" name="ngame" value="vsai" checked><br>
+            VS. Player <input type="radio" name="ngame" value="vsplayer"><br><br>
+            <input type="button" class="okbutton" onclick="chesstable.newGame()" value="Start!">
+        </form>
     </div>
 
     <a onclick="ngameOpt('#savegame')">Save Game</a>
-      <!-- <input type="button" class="menubtn" onclick="ngameOpt('#savegame')" value="Save Game"> -->
+    <!-- <input type="button" class="menubtn" onclick="ngameOpt('#savegame')" value="Save Game"> -->
     <div id="savegame" class="savegame newgame">
-    <select size="3" >
-      <option value "savegame1" >Savegame 1 </option>
-      <option value "savegame2">Savegame 2 </option>
-      <option value "savegame3">Savegame 3 </option>
-      <option value "savegame4">Savegame 4 </option>
-     </select>
-     <br><br>
-     <input type="button" class="okbutton" onclick="alert('Game Saved!')" value="OK">
-   </div>
-    <a  onclick="ngameOpt('#loadgame')">Load Game</a>
+        <select size="3">
+            <option value
+            "savegame1" >Savegame 1 </option>
+            <option value
+            "savegame2">Savegame 2 </option>
+            <option value
+            "savegame3">Savegame 3 </option>
+            <option value
+            "savegame4">Savegame 4 </option>
+        </select>
+        <br><br>
+        <input type="button" class="okbutton" onclick="alert('Game Saved!')" value="OK">
+    </div>
+    <a onclick="ngameOpt('#loadgame')">Load Game</a>
     <div id="loadgame" class="savegame newgame">
-    <select size="3" >
-      <option value "loadgame1" selected>Loadgame 1 </option>
-      <option value "loadgame2">Loadgame 2 </option>
-      <option value "loadgame3">Loadgame 3 </option>
-      <option value "loadgame4">Loadgame 4 </option>
-     </select>
-     <br><br>
-     <input type="button" class="okbutton" onclick="alert('Game Saved!')" value="OK">
-   </div>
-    <a  onclick="ngameOpt('#settings')">Settings</a>
+        <select size="3">
+            <option value
+            "loadgame1" selected>Loadgame 1 </option>
+            <option value
+            "loadgame2">Loadgame 2 </option>
+            <option value
+            "loadgame3">Loadgame 3 </option>
+            <option value
+            "loadgame4">Loadgame 4 </option>
+        </select>
+        <br><br>
+        <input type="button" class="okbutton" onclick="alert('Game Saved!')" value="OK">
+    </div>
+    <a onclick="ngameOpt('#settings')">Settings</a>
     <div id="settings" class="settings newgame" name="difficulty">
-      <div class="row_wrapper">
-        <span  style="float: left !important;" >Difficulty: </span> <select style="display: inline-block !important;" >
-         <option value "difficulty1" selected>Easy </option>
-        <option value "difficulty2">Medium </option>
-        <option value "difficulty3">Hard </option>
-       </select><br></div>
-       <div class="row_wrapper">
-       <span style="float: left !important;"> Volume: </span><span id="VolumeValue"; ></span><div id = "SliderPopUp" >
-         <input type="range" min="1" max="100" value="50" class="slider" id="VolumeSlider" ></div>
+        <div class="row_wrapper">
+            <span style="float: left !important;">Difficulty: </span> <select style="display: inline-block !important;">
+            <option value
+            "difficulty1" selected>Easy </option>
+            <option value
+            "difficulty2">Medium </option>
+            <option value
+            "difficulty3">Hard </option>
+        </select><br></div>
+        <div class="row_wrapper">
+            <span style="float: left !important;"> Volume: </span><span id="VolumeValue" ;></span>
+            <div id="SliderPopUp">
+                <input type="range" min="1" max="100" value="50" class="slider" id="VolumeSlider"></div>
         </div>
     </div>
-    <a  >Training</a>
+    <a>Training</a>
 
     <a onclick="muteAudio()">Testing mute button</a>
-  </div>
+</div>
 
-  <!-- <div id="soundcontainer"> -->
-  <audio id="background_audio" autoplay="autoplay">
+<!-- <div id="soundcontainer"> -->
+<audio id="background_audio" autoplay="autoplay">
     <!-- <embed src="planets.mp3"  autostart="true" loop="true" hidden="true"> -->
-    <source src="sound/planets.mp3" type="audio/mpeg" />
-  </audio>
-  <!-- </div> -->
+    <source src="sound/planets.mp3" type="audio/mpeg"/>
+</audio>
+<!-- </div> -->
 
-  <h2>MasterChesser 2017</h2>
-  <p>You are in game.</p>
-  <div id="test" >
-      <select size="3" >
-        <option value "savegame1">Savegame 1 </option>
-        <option value "savegame2">Savegame 2 </option>
-        <option value "savegame3">Savegame 3 </option>
-        <option value "savegame4">Savegame 4 </option>
-       </select> </div>
-  <!-- <div id="svgContainer"></div> -->
-  <span style="font-size:30px;cursor:pointer; padding-left: 25%" onclick="openNav()">&#9776; open</span>
-  <div id="mainChessBoard">
-  </div>
-  <!-- <svg class="testsvg">
-    <use xlink:href="../chesspieces/Chess_bdt45.svg#testsvg"></use>
-  </svg> -->
+<h2>MasterChesser 2017</h2>
+<p>You are in game.</p>
+<!-- <div id="svgContainer"></div> -->
+<span style="font-size:30px;cursor:pointer; padding-left: 25%" onclick="openNav()">&#9776; open</span>
+<div id="mainChessBoard">
+</div>
+<!-- <svg class="testsvg">
+  <use xlink:href="../chesspieces/Chess_bdt45.svg#testsvg"></use>
+</svg> -->
 
 
 <!-- SCRIPT SECTION -->
 
-<script type="text/javascript" src="js/jquery.min.js"> </script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 <script type="text/javascript" src="js/main.js"></script>
-  </body>
-  </html>
+</body>
+</html>

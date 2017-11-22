@@ -1,14 +1,14 @@
 @font-face {
-  font-family: 'Ubuntu-R';
-  src: url("ubuntu_font/Ubuntu-R.ttf");
+    font-family: 'Ubuntu-R';
+    src: url("ubuntu_font/Ubuntu-R.ttf");
 }
 @font-face {
-  font-family: 'Ubuntu-B';
-  src: url("ubuntu_font/Ubuntu-B.ttf");
+    font-family: 'Ubuntu-B';
+    src: url("ubuntu_font/Ubuntu-B.ttf");
 }
 @font-face {
-  font-family: 'Ubuntu-M';
-  src: url("ubuntu_font/Ubuntu-M.ttf");
+    font-family: 'Ubuntu-M';
+    src: url("ubuntu_font/Ubuntu-M.ttf");
 }
 ::-webkit-scrollbar {
     width: 12px;
@@ -23,28 +23,28 @@
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
-      background-color: #4CAF50;
-      
+    background-color: #4CAF50;
+
 }
 
 body, html {
-  font-family: Ubuntu-R, serif;
+    font-family: Ubuntu-R, serif;
 
-  -webkit-font-smoothing: antialiased !important;
-  
-  text-rendering: optimizeLegibility !important;
-/* position: absolute; */
-/* overflow: hidden; */
-   /*background: rgba(1, 1, 1, 0.3);*/
-   /*background-repeat: repeat;*/
+    -webkit-font-smoothing: antialiased !important;
+
+    text-rendering: optimizeLegibility !important;
+    /* position: absolute; */
+    /* overflow: hidden; */
+    /*background: rgba(1, 1, 1, 0.3);*/
+    /*background-repeat: repeat;*/
 }
 
 h2 {
-  text-decoration: blink;
-  text-align: center;
-  /*color: white;*/
-  /*border: solid 2px white;
-  background-color: white;*/
+    text-decoration: blink;
+    text-align: center;
+    /*color: white;*/
+    /*border: solid 2px white;
+    background-color: white;*/
 }
 img.resize {
     width: auto; /* you can use % */
@@ -56,85 +56,85 @@ img.resize {
   /*filter: grayscale(1);
 }*/
 .background-image:before{
-  content: "";
-  overflow: auto;
-  left: 0;
- right: 0;
- top: 0;
-   position: fixed;
-  background-image: url("../img/topography.png");
-  width: 100%;
- height: 100%;
- z-index: -1;
-   display: block;
+    content: "";
+    overflow: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    position: fixed;
+    background-image: url("../img/topography.png");
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    display: block;
     background-repeat: repeat;
     /*filter: grayscale(1);*/
     filter: invert(1) brightness(5) invert(1) drop-shadow(0 0 5px black) ;
-  /*filter: grayscale(1);*/
+    /*filter: grayscale(1);*/
 }
 #mySidenav.sidenav {
-  height: 100%;
-  width: 250px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  
-  background-image: url("../img/method-draw-image2.svg");
-  background-repeat:no-repeat;
- background-size: 100% 100%;
-/* //background-size: cover; */
-  /* overflow-x: hidden; */
-  /*overflow-y:scroll;*/
-  /* overflow: hidden;  */
-  transition: 1s;
-  padding-top: 60px;
-	margin-right: 0;
-  border-style: solid;
-  /*border-color: #32cd32;*/
-  border-color: transparent;
-  border-width: 3% 3% 3% 3%;
-  border-radius:  0 2% 2% 0;
-  /*clip-path: polygon(53% 0, 63% 13%, 51% 25%, 50% 100%, 0 100%, 0 0);*/
-  /*clip-path: circle(50.0% at 50% 50%);*/
-  animation: clips 3s ease infinite;
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+
+    background-image: url("../img/method-draw-image2.svg");
+    background-repeat:no-repeat;
+    background-size: 100% 100%;
+    /* //background-size: cover; */
+    /* overflow-x: hidden; */
+    /*overflow-y:scroll;*/
+    /* overflow: hidden;  */
+    transition: 1s;
+    padding-top: 60px;
+    margin-right: 0;
+    border-style: solid;
+    /*border-color: #32cd32;*/
+    border-color: transparent;
+    border-width: 3% 3% 3% 3%;
+    border-radius:  0 2% 2% 0;
+    /*clip-path: polygon(53% 0, 63% 13%, 51% 25%, 50% 100%, 0 100%, 0 0);*/
+    /*clip-path: circle(50.0% at 50% 50%);*/
+    animation: clips 3s ease infinite;
 
 }
- .sidenav a.closebtn   {
-  margin: 8px 0px 0px 0px;
-  text-decoration: none;
-  font-size: 50px;
-  color: transparent;
-  /*opacity:0.2;*/
-  display: inline-block;
-  transition: 0.3s;
-  -webkit-user-select: none;
+.sidenav a.closebtn   {
+    margin: 8px 0px 0px 0px;
+    text-decoration: none;
+    font-size: 50px;
+    color: transparent;
+    /*opacity:0.2;*/
+    display: inline-block;
+    transition: 0.3s;
+    -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -o-user-select: none;
     user-select: none;
 }
- .sidenav a.closebtn:hover  {
-  cursor: pointer;
-  color: transparent;
+.sidenav a.closebtn:hover  {
+    cursor: pointer;
+    color: transparent;
 }
 .sidenav a {
-  /* padding: 8px 40px 8px 32px; */
-  margin: 8px 40px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  /*opacity:0.2;*/
-  display: block;
-  transition: 0.3s;
+    /* padding: 8px 40px 8px 32px; */
+    margin: 8px 40px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    /*opacity:0.2;*/
+    display: block;
+    transition: 0.3s;
 
 }
 
 .sidenav a:hover {
-  color: #f1f1f1;
-  /*color: #32cd32;*/
-  cursor: pointer;
-  -webkit-user-select: none;
+    color: #f1f1f1;
+    /*color: #32cd32;*/
+    cursor: pointer;
+    -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -o-user-select: none;
@@ -144,50 +144,50 @@ img.resize {
 
 
 .sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  right: 12px;
-  color: transparent;
-  font-size: 50px;
-  margin-left: 50px;
+    position: absolute;
+    top: 0;
+    right: 12px;
+    color: transparent;
+    font-size: 50px;
+    margin-left: 50px;
 }
 /* #hoveringnot .sidenav .closebtn a:hover { */
-  /* position: absolute; */
-  /* top: 0; */
-  /* right: 12px; */
-  /* color: transparent; */
-  /* font-size: 50px; */
-  /* margin-left: 50px; */
-  /* cursor: pointer; */
+/* position: absolute; */
+/* top: 0; */
+/* right: 12px; */
+/* color: transparent; */
+/* font-size: 50px; */
+/* margin-left: 50px; */
+/* cursor: pointer; */
 /* } */
 
 .menubtn{
-  background-color: #4CAF50;
-  border: solid #4CAF50;
-  border-radius: 25% 15% 25% 15%;
-  /*padding: 30px 30px 30px 30px;*/
-  color: #111;
-  margin: 8px 0px 8px 32px;
-  padding-right: 8px;
-  text-decoration: none;
-  font-size: 25px;
-  /*opacity:0.2;*/
-  /*display: block;*/
-  transition: 0.3s;
-  cursor: pointer;
+    background-color: #4CAF50;
+    border: solid #4CAF50;
+    border-radius: 25% 15% 25% 15%;
+    /*padding: 30px 30px 30px 30px;*/
+    color: #111;
+    margin: 8px 0px 8px 32px;
+    padding-right: 8px;
+    text-decoration: none;
+    font-size: 25px;
+    /*opacity:0.2;*/
+    /*display: block;*/
+    transition: 0.3s;
+    cursor: pointer;
 }
 .newgame, #ngopt {
-  /*height: 0%;*/
-  /*width: 0%;*/
-  padding: 8px 70px 8px 60px;
-  text-decoration: none;
-  text-align: right;
-  font-size: 16px;
-  color: #818181;
-  /*opacity:0.2;*/
-  /*border: solid 2px;*/
-  display: none;
-  /*transition: 0.3s;*/
+    /*height: 0%;*/
+    /*width: 0%;*/
+    padding: 8px 70px 8px 60px;
+    text-decoration: none;
+    text-align: right;
+    font-size: 16px;
+    color: #818181;
+    /*opacity:0.2;*/
+    /*border: solid 2px;*/
+    display: none;
+    /*transition: 0.3s;*/
 }
 
 .savegame {
@@ -195,218 +195,218 @@ img.resize {
 
 }
 .savegame select {
-  -webkit-appearance: none;
-  color: #818181;
-  font-size: 16px;
-  /*height:50px;*/
-  /*width:100%;*/
-  /*overflow:hidden;*/
-  /*overflow-y:scroll;*/
-  border: solid 2px;
-  padding: 4px;
-  border-color: #4CAF50;
-  background-color: #111;
-  border-radius: 5% 5% 5% 5%;
-  /* outline: none !important; */
-  -webkit-appearance:none !important;
+    -webkit-appearance: none;
+    color: #818181;
+    font-size: 16px;
+    /*height:50px;*/
+    /*width:100%;*/
+    /*overflow:hidden;*/
+    /*overflow-y:scroll;*/
+    border: solid 2px;
+    padding: 4px;
+    border-color: #4CAF50;
+    background-color: #111;
+    border-radius: 5% 5% 5% 5%;
+    /* outline: none !important; */
+    -webkit-appearance:none !important;
 }
 .savegame option {
-  -webkit-appearance:none !important;
+    -webkit-appearance:none !important;
 }
 
 .savegame option:checked {
-  box-shadow: 10px 10px 10px 10px #111 inset;
-  border: 0;
-  color: #111 !important;
-  outline: none !important;
+    box-shadow: 10px 10px 10px 10px #111 inset;
+    border: 0;
+    color: #111 !important;
+    outline: none !important;
 }
 
 
 .savegame option:hover {
-  text-decoration: underline;
-  cursor: pointer;
-  outline: none !important;
-  /* background-color: #4CAF50; */
-   /*text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);*/
+    text-decoration: underline;
+    cursor: pointer;
+    outline: none !important;
+    /* background-color: #4CAF50; */
+    /*text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);*/
 }
 
 #setting {
 
 }
 .settings {
-  /* overflow: visible !important; */
-  /* border: 2px solid yellow; */
+    /* overflow: visible !important; */
+    /* border: 2px solid yellow; */
 
 }
 #settings.settings.newgame {
-  /* line-height: 180%; */
-  /* border: solid 1px yellow; */
-  padding: 8px 70px 8px 50px !important;
-  /* display: inline-block !important; */
-  /* text-align: left !important; */
+    /* line-height: 180%; */
+    /* border: solid 1px yellow; */
+    padding: 8px 70px 8px 50px !important;
+    /* display: inline-block !important; */
+    /* text-align: left !important; */
 }
 .settings.newgame select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  text-align: right !important;
-  text-align-last: right;
-  text-indent: 1px;
-  text-overflow: '';
-  /* background-color: #4CAF50; */
-  background-color: #111111;
-  /* border-color: #4CAF50;
-  border-radius: 10%; */
-  border: 0;
-  color: #4CAF50;
-  max-width: 40%;
-  cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-align: right !important;
+    text-align-last: right;
+    text-indent: 1px;
+    text-overflow: '';
+    /* background-color: #4CAF50; */
+    background-color: #111111;
+    /* border-color: #4CAF50;
+    border-radius: 10%; */
+    border: 0;
+    color: #4CAF50;
+    max-width: 40%;
+    cursor: pointer;
 }
 
 .settings.newgame option:checked {
-  box-shadow: 10px 10px 10px 10px #111 inset;
-  border: 0;
-  color: #111 !important;
-  outline: none !important;
+    box-shadow: 10px 10px 10px 10px #111 inset;
+    border: 0;
+    color: #111 !important;
+    outline: none !important;
 }
 
 
 .settings.newgame option:hover {
-  text-decoration: underline;
-  cursor: pointer;
-  outline: none !important;
-  /* background-color: #4CAF50; */
-   /*text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);*/
+    text-decoration: underline;
+    cursor: pointer;
+    outline: none !important;
+    /* background-color: #4CAF50; */
+    /*text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);*/
 }
 
 .settings.newgame select::-ms-expand {
-  display: none;
+    display: none;
 }
 .row_wrapper {
-  margin: 2px 0px 2px 0px; /*Extra space between rows*/
+    margin: 2px 0px 2px 0px; /*Extra space between rows*/
 }
 .okbutton{
-  position: relative;
-  background-color: #4CAF50;
-  border: 2px solid #4CAF50;
-  /*border: #4CAF50;*/
-  color: black;
-  /*       padding: 0px; */
-  font-family: Ubuntu-B, serif;
-  font-size: 15px;
-  border-radius: 25% 15% 25% 15%;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
+    position: relative;
+    background-color: #4CAF50;
+    border: 2px solid #4CAF50;
+    /*border: #4CAF50;*/
+    color: black;
+    /*       padding: 0px; */
+    font-family: Ubuntu-B, serif;
+    font-size: 15px;
+    border-radius: 25% 15% 25% 15%;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
 
-  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-  transition: all 0.3s ease-in-out;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    transition: all 0.3s ease-in-out;
 }
 .okbutton::after {
-  /*content: '';*/
-  position: absolute;
-  z-index: -1; /*Make it back of text just in case*/
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
+    /*content: '';*/
+    position: absolute;
+    z-index: -1; /*Make it back of text just in case*/
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
 .okbutton:hover {
-  transform: scale(1.2, 1.2); /*Let's make button bigger*/
+    transform: scale(1.2, 1.2); /*Let's make button bigger*/
 }
 .okbutton:hover::after {
-  opacity: 1;
+    opacity: 1;
 }
 
 
 @media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
 }
 .h2menu{
-  /*font-size: 16px*/
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  /*opacity:0.2;*/
-  display: block;
-  transition: 0.3s;
-  /*text-decoration: none;*/
-  text-align: left;
+    /*font-size: 16px*/
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    /*opacity:0.2;*/
+    display: block;
+    transition: 0.3s;
+    /*text-decoration: none;*/
+    text-align: left;
 
 }
 
 
 .slider {
-  -webkit-appearance: none;  /* Override default CSS styles */
-  appearance: none;
-  width: 100%; /* Full-width */
-  height: 7px; /* Specified height */
- /*  background:transparent; */ /* Grey background */
-  background: #111111;
-  outline: none; /* Remove outline */
-  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-  transition: opacity .2s;
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 100%; /* Full-width */
+    height: 7px; /* Specified height */
+    /*  background:transparent; */ /* Grey background */
+    background: #111111;
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
 }
 .slider:hover {
-  opacity: 1; /* Fully shown on mouse-over */
+    opacity: 1; /* Fully shown on mouse-over */
 }
 .slider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
-  appearance: none;
-  width: 8px; /* Set a specific slider handle width */
-  height: 16px; /* Slider handle height */
-  /* background: #4CAF50; Green background */
-  background: #4CAF50;
-  cursor: pointer; /* Cursor on hover */
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 8px; /* Set a specific slider handle width */
+    height: 16px; /* Slider handle height */
+    /* background: #4CAF50; Green background */
+    background: #4CAF50;
+    cursor: pointer; /* Cursor on hover */
 }
 
 .slider::-moz-range-thumb {
-  width: 5px; /* Set a specific slider handle width */
-  height: 16px; /* Slider handle height */
-  background: #4CAF50; /* Green background */
-  cursor: pointer; /* Cursor on hover */
+    width: 5px; /* Set a specific slider handle width */
+    height: 16px; /* Slider handle height */
+    background: #4CAF50; /* Green background */
+    cursor: pointer; /* Cursor on hover */
 }
 #VolumeValue{
-  text-align: left !important;
-  color: #4CAF50;
+    text-align: left !important;
+    color: #4CAF50;
 }
 #VolumeValue:hover{
-  cursor: pointer;
-  
+    cursor: pointer;
+
 }
 
 #SliderPopUp {
-  
-  display: none;
+
+    display: none;
 }
 #SliderPopUp.show {
-  z-index: 10;
-  /* padding-left: 30px; */
-  width: 20%;
-  background: #111111;
-  border-style: solid;
-  border-color: #111111;
-  border-width: 0px 15px 0px 2px;
-  border-radius: 20% 20% 20% 20%;
-  display: inline-block;
-  -webkit-animation: fadeIn 1s;
-  animation: fadeIn 1s;
-  position: absolute;
-  opacity: 0.6;
+    z-index: 10;
+    /* padding-left: 30px; */
+    width: 20%;
+    background: #111111;
+    border-style: solid;
+    border-color: #111111;
+    border-width: 0px 15px 0px 2px;
+    border-radius: 20% 20% 20% 20%;
+    display: inline-block;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+    position: absolute;
+    opacity: 0.6;
 }
 #SliderPopUp.show:hover{
-  opacity: 0.9 !important;
+    opacity: 0.9 !important;
 }
 
 /*#mainChessBoard*/
-  /*{*/
-      /*width:320px;*/
-      /*height:320px;*/
-      /*border:2px solid black;*/
-      /*!*border-radius: 20% 20% 20% 20%;*!*/
-      /*margin-left: 35%;*/
-  /*}*/
+/*{*/
+/*width:320px;*/
+/*height:320px;*/
+/*border:2px solid black;*/
+/*!*border-radius: 20% 20% 20% 20%;*!*/
+/*margin-left: 35%;*/
+/*}*/
 #mainChessBoard
 {
     width:800px;
@@ -433,46 +433,46 @@ img.resize {
     z-index: -1;
     border: 2px solid #8d7878;
 
-    
+
 }
 .square.over {
-  border: 2px solid rgb(238, 191, 36) !important;
+    border: 2px solid rgb(238, 191, 36) !important;
 }
 .square.legal {
-  /* float:left; */
-  z-index: -1;
-  /* width: 92px !important; */
-  /* height: 92px !important; */
-  /* padding: -1px !important; */
-  /* margin: auto !important; */
-  background-color: rgb(158, 158, 68) !important;
-  border: 2px solid black !important;
+    /* float:left; */
+    z-index: -1;
+    /* width: 92px !important; */
+    /* height: 92px !important; */
+    /* padding: -1px !important; */
+    /* margin: auto !important; */
+    background-color: rgb(158, 158, 68) !important;
+    border: 2px solid black !important;
 
 }
 .piece {
 
-  width:100px;
-  height:100px;
-  /*display: block;*/
-  /* margin: auto; */
-  position: absolute;
-  cursor: move;
-  /* display: inline; */
-  /* text-align: center; */
-/* Make elements draggable in old WebKit */
--khtml-user-drag: element;
--webkit-user-drag: element;
+    width:100px;
+    height:100px;
+    /*display: block;*/
+    /* margin: auto; */
+    position: absolute;
+    cursor: move;
+    /* display: inline; */
+    /* text-align: center; */
+    /* Make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
 
 
 
 }
 /*Disabling selection of text/images to enable better dragging*/
 .unselectable {
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -o-user-select: none;
-  user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 
 
 }
