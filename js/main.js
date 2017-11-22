@@ -19,109 +19,129 @@ function ngameOpt(test) {
 
   if ($(test).css("display") === "none") {
     $(test).slideDown("slow");
+    document.getElementById('SliderPopUp').classList.remove("show"); //Close volume slider
     // x.style.display = "block";
   } else {
     $(test).slideUp("slow");
+    document.getElementById('SliderPopUp').classList.remove("show"); //Close volume slider
   }
 }
+function addSlider(){
+
+    var slider = document.getElementById("VolumeSlider");
+    var output = document.getElementById("VolumeValue");
+    output.innerHTML = slider.value;
+    // $('input').popup();
+    slider.oninput = function () {
+    output.innerHTML = this.value;
+    document.getElementById('background_audio').volume = this.value/100; //Adjust backgroound volume
+  
+  
+  
+  }
+ 
+}
+
+
 
 function closeNav() {
-	if (!$(this).data('clicked')){
-  document.getElementById("mySidenav").style.left = "-200px";
-  $(this).click(function(){
-    $(this).data('clicked', true);
-});
-	}
-	else {
-		 document.getElementById("mySidenav").style.left = "0px";
-		 $(this).click(function(){
-    $(this).data('clicked', false);
-});
-	}
-   // document.getElementById("mySidenav").style.down = "100px";
+  if (!$(this).data('clicked')) {
+    document.getElementById("mySidenav").style.left = "-200px";
+    $(this).click(function () {
+      $(this).data('clicked', true);
+    });
+  }
+  else {
+    document.getElementById("mySidenav").style.left = "0px";
+    $(this).click(function () {
+      $(this).data('clicked', false);
+    });
+  }
+  // document.getElementById("mySidenav").style.down = "100px";
   //document.getElementById("mySidenav").style.left = "200px";
 }
 
-function muteAudio(){
-  if (  document.getElementById("background_audio").muted == true){
-    document.getElementById("background_audio").muted = false;}
-    else {
-      document.getElementById("background_audio").muted = true;
-    }
-
+function muteAudio() {
+  if (document.getElementById("background_audio").muted == true) {
+    document.getElementById("background_audio").muted = false;
   }
- 
-
- 
-  Element.prototype.remove = function() {
-    this.parentElement.removeChild(this);
-}
-NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
-    for(var i = this.length - 1; i >= 0; i--) {
-        if(this[i] && this[i].parentElement) {
-            this[i].parentElement.removeChild(this[i]);
-        }
-    }
-}
-
-  
-  function stopDefault(e) {
-      console.log("hahahahaha");
-    e.preventDefault(); //JQuery prevent default
+  else {
+    document.getElementById("background_audio").muted = true;
   }
 
+}
+
+
+
+Element.prototype.remove = function () {
+  this.parentElement.removeChild(this);
+}
+NodeList.prototype.remove = HTMLCollection.prototype.remove = function () {
+  for (var i = this.length - 1; i >= 0; i--) {
+    if (this[i] && this[i].parentElement) {
+      this[i].parentElement.removeChild(this[i]);
+    }
+  }
+}
+
+
+function stopDefault(e) {
+  console.log("hahahahaha");
+  e.preventDefault(); //JQuery prevent default
+
+}
 
 
 var Chessboard = class Chessboard {
-	 constructor(height, width) {
-     this.letters = "abcdefgh";
+  constructor(height, width) {
+    this.letters = "abcdefgh";
     this.height = height;
     this.width = width;
     var self = this;
-	// var $tempobj = $("<div>").css('display', 'none').addClass("square");
+    // var $tempobj = $("<div>").css('display', 'none').addClass("square");
     // $("body").append($tempobj);
-	// console.log($tempobj.css("border-width"));
-	this.sq_borderwidth = 2;
-	// $tempobj.remove();
-	var boarddiv = document.getElementById("mainChessBoard");
-	//console.log(boarddiv);
-	boarddiv.style.height = this.height + 'px';
-	boarddiv.style.width = this.width + 'px';
-	
-	
-	this.createBoard();
- // console.log(self);
+    // console.log($tempobj.css("border-width"));
+    this.sq_borderwidth = 2;
+    // $tempobj.remove();
+    var boarddiv = document.getElementById("mainChessBoard");
+    //console.log(boarddiv);
+    boarddiv.style.height = this.height + 'px';
+    boarddiv.style.width = this.width + 'px';
+
+
+    this.createBoard();
+    // console.log(self);
 
   }
 
-    createBoard() {
+  createBoard() {
 
-    for (var i=0; i< 64; i++){
+    for (var i = 0; i < 64; i++) {
       //            var idnumber = 1;
 
       var square = document.createElement("div");
       square.classList.add('square');
-	  
-	  square.style.height = ((this.height/8)-(2*this.sq_borderwidth)) + 'px';
-	  // console.log(square.style.height);
-	  square.style.width = ((this.height/8)-(2*this.sq_borderwidth)) + 'px';
-    // console.log(square.style.width);
-    square.classList.add('unselectable');
-	  
-	  
-	  
-     //  square.ondragover = stopDefault;
-     square.ondragover = this.handleSquareDragOverDefault;
+
+      square.style.height = ((this.height / 8) - (2 * this.sq_borderwidth)) + 'px';
+      // console.log(square.style.height);
+      square.style.width = ((this.height / 8) - (2 * this.sq_borderwidth)) + 'px';
+      // console.log(square.style.width);
+      square.classList.add('unselectable');
+
+
+
+      //  square.ondragover = stopDefault;
+      square.ondragover = this.handleSquareDragOverDefault;
       square.ondragleave = this.handleSquareDragLeave;
       square.ondrop = this.handleSquareDragDrop;
-      var test = this.letters[i % 8] + (8 - parseInt(i/8));
+      var test = this.letters[i % 8] + (8 - parseInt(i / 8));
       square.id = test; /*Generating correct id for each square*/
       // dragElement(test);
       //Board has 64 childs: squares
       square.style.backgroundColor = parseInt((i / 8) + i)
-      % 2 == 0 ? 'white' : '#ababab';
+        % 2 == 0 ? 'white' : '#ababab';
       square.setAttribute("color", parseInt((i / 8) + i)
-      % 2 == 0 ? 'white' : 'black');
+        % 2 == 0 ? 'white' : 'black');
 
       document.getElementById("mainChessBoard").appendChild(square);
       var number = document.createTextNode(test);
@@ -153,7 +173,7 @@ var Chessboard = class Chessboard {
     //New game positions
 
     var white_pawns = ["a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2"];
-    var black_pawns = ["a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7" ];
+    var black_pawns = ["a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7"];
     var white_rooks = ["a1", "h1"];
     var black_rooks = ["a8", "h8"];
     var white_knights = ["b1", "g1"];
@@ -182,89 +202,89 @@ var Chessboard = class Chessboard {
 
         // var id = '#';
         // document.write("hahahahah");
-        var id =  this.letters[i] + (x + 1);
+        var id = this.letters[i] + (x + 1);
         // document.write(id);
         var elem = document.createElement("img");
 
-        if (white_pawns.indexOf(id) > -1){
+        if (white_pawns.indexOf(id) > -1) {
           elem.setAttribute("src", wpawn);
           elem.setAttribute("side", "white");
           elem.setAttribute("type", "wpawn");
           wpawn_counter++;
           elem.id = "wpawn" + wpawn_counter;
         }
-       else  if (black_pawns.indexOf(id) > -1){
+        else if (black_pawns.indexOf(id) > -1) {
           elem.setAttribute("src", bpawn);
-            elem.setAttribute("side", "black");
-            elem.setAttribute("type", "bpawn");
-            bpawn_counter++;
-            elem.id = "bpawn" + bpawn_counter;
+          elem.setAttribute("side", "black");
+          elem.setAttribute("type", "bpawn");
+          bpawn_counter++;
+          elem.id = "bpawn" + bpawn_counter;
         }
-        else if (white_rooks.indexOf(id) > -1){
+        else if (white_rooks.indexOf(id) > -1) {
           elem.setAttribute("src", wrook);
-            elem.setAttribute("side", "white");
-            elem.setAttribute("type", "rook");
-            wrook_counter++;
-            elem.id = "wrook" + wrook_counter;
+          elem.setAttribute("side", "white");
+          elem.setAttribute("type", "rook");
+          wrook_counter++;
+          elem.id = "wrook" + wrook_counter;
         }
-        else if (black_rooks.indexOf(id) > -1){
+        else if (black_rooks.indexOf(id) > -1) {
           elem.setAttribute("src", brook);
-            elem.setAttribute("side", "black");
-            elem.setAttribute("type", "rook");
-            brook_counter++;
-            elem.id = "brook" + brook_counter;
+          elem.setAttribute("side", "black");
+          elem.setAttribute("type", "rook");
+          brook_counter++;
+          elem.id = "brook" + brook_counter;
         }
-        else if (white_knights.indexOf(id) > -1){
+        else if (white_knights.indexOf(id) > -1) {
           elem.setAttribute("src", wknight);
-            elem.setAttribute("side", "white");
-            elem.setAttribute("type", "knight");
-            wknight_counter++;
-            elem.id = "wknight" + wknight_counter;
+          elem.setAttribute("side", "white");
+          elem.setAttribute("type", "knight");
+          wknight_counter++;
+          elem.id = "wknight" + wknight_counter;
         }
-        else if (black_knights.indexOf(id) > -1){
+        else if (black_knights.indexOf(id) > -1) {
           elem.setAttribute("src", bknight);
-            elem.setAttribute("side", "black");
-            elem.setAttribute("type", "knight");
-            bknight_counter++;
-            elem.id = "bknight" + bknight_counter;
+          elem.setAttribute("side", "black");
+          elem.setAttribute("type", "knight");
+          bknight_counter++;
+          elem.id = "bknight" + bknight_counter;
         }
-        else if (black_bishops.indexOf(id) > -1){
+        else if (black_bishops.indexOf(id) > -1) {
           elem.setAttribute("src", bbishop);
-            elem.setAttribute("side", "black");
-            elem.setAttribute("type", "bishop");
-            bbishop_counter++;
-            elem.id = "bbishop" + bbishop_counter;
+          elem.setAttribute("side", "black");
+          elem.setAttribute("type", "bishop");
+          bbishop_counter++;
+          elem.id = "bbishop" + bbishop_counter;
         }
-        else if (white_bishops.indexOf(id) > -1){
+        else if (white_bishops.indexOf(id) > -1) {
           elem.setAttribute("src", wbishop);
-            elem.setAttribute("side", "white");
-            elem.setAttribute("type", "bishop");
-            wbishop_counter++;
-            elem.id = "wbishop" + wbishop_counter;
+          elem.setAttribute("side", "white");
+          elem.setAttribute("type", "bishop");
+          wbishop_counter++;
+          elem.id = "wbishop" + wbishop_counter;
         }
-        else if (white_queen.indexOf(id) > -1){
+        else if (white_queen.indexOf(id) > -1) {
           elem.setAttribute("src", wqueen);
-            elem.setAttribute("side", "white");
-            elem.setAttribute("type", "queen");
-            elem.id ="wqueen";
+          elem.setAttribute("side", "white");
+          elem.setAttribute("type", "queen");
+          elem.id = "wqueen";
         }
-        else if (black_queen.indexOf(id) > -1){
+        else if (black_queen.indexOf(id) > -1) {
           elem.setAttribute("src", bqueen);
-            elem.setAttribute("side", "black");
-            elem.setAttribute("type", "queen");
-            elem.id ="bqueen";
+          elem.setAttribute("side", "black");
+          elem.setAttribute("type", "queen");
+          elem.id = "bqueen";
         }
-        else if (white_king.indexOf(id) > -1){
+        else if (white_king.indexOf(id) > -1) {
           elem.setAttribute("src", wking);
-            elem.setAttribute("side", "white");
-            elem.setAttribute("type", "king");
-              elem.id ="wking";
+          elem.setAttribute("side", "white");
+          elem.setAttribute("type", "king");
+          elem.id = "wking";
         }
-        else if (black_king.indexOf(id) > -1){
+        else if (black_king.indexOf(id) > -1) {
           elem.setAttribute("src", bking);
-            elem.setAttribute("side", "black");
-            elem.setAttribute("type", "king");
-            elem.id ="bking";
+          elem.setAttribute("side", "black");
+          elem.setAttribute("type", "king");
+          elem.id = "bking";
         }
         else {
           break;
@@ -272,11 +292,11 @@ var Chessboard = class Chessboard {
 
 
         //Properties of piece
-        elem.className = "piece unselectable"; 
-        elem.style.height = this.height/8 + 'px';
-        elem.style.width = this.width/8 + 'px';
+        elem.className = "piece unselectable";
+        elem.style.height = this.height / 8 - (2 * this.sq_borderwidth) + 'px';
+        elem.style.width = this.width / 8 - (2 * this.sq_borderwidth) + 'px';
 
-;
+        ;
         this.dragElement(elem);
         var hmm = document.getElementById(id);
         hmm.appendChild(elem);
@@ -285,7 +305,7 @@ var Chessboard = class Chessboard {
     }
     //
   }
-   newGame(){
+  newGame() {
     //Let's remove all the pieces from the Chessboard. We have own function for it
     document.getElementsByClassName("piece").remove();
 
@@ -296,17 +316,17 @@ var Chessboard = class Chessboard {
 
 
   handleSquareDragOverDefault() { //Just for coloring targeted square
-  if(!this.classList.contains("over")){
-   this.classList.add('over');
-  }
+    if (!this.classList.contains("over")) {
+      this.classList.add('over');
+    }
   }
   handleSquareDragOver(e) {
     e = e || window.event;
-     if (e.preventDefault) {
+    if (e.preventDefault) {
       e.preventDefault(); // Necessary. Allows us to drop.
     }
 
-   this.classList.add('over');
+    // this.classList.add('over');
 
   }
   handleSquareDragLeave(e) {
@@ -317,141 +337,151 @@ var Chessboard = class Chessboard {
   handleSquareDragDrop() {
 
     this.classList.remove('over'); // Remove 'over' effect from square
-   
+
   }
   dragElement(elmnt) { // Set different methods for different situations
-      elmnt.ondragstart = this.elementDragStart.bind(this);
-      elmnt.ondragend = this.elementDragEnd;
-      document.ondrop = this.closeDragElement;
+    elmnt.ondragstart = this.elementDragStart.bind(this);
+    elmnt.ondragend = this.elementDragEnd;
+    document.ondrop = this.closeDragElement;
   }
-  
-  
+
+
   elementDragStart(e) {
 
     e = e || window.event;
     e.dataTransfer.setData("Text", e.target.id);
     e.dataTransfer.effectAllowed = "move";
-   this.isLegalMove(e.target.parentElement); // Check legal moves from starting position
+    this.isLegalMove(e.target.parentElement); // Check legal moves from starting position
 
   }
-  
-    elementDragEnd(e) {
-      var squares = document.getElementsByClassName("square");
-      
-          for (var i = 0; i < squares.length; i++){ //Reset allowed actions
-      
-           squares[i].ondragover = this.handleSquareDragOverDefault
-           squares[i].classList.remove("legal");
-          }
+
+  elementDragEnd(e) {
+    var squares = document.getElementsByClassName("square");
+
+    for (var i = 0; i < squares.length; i++) { //Reset allowed actions
+
+      squares[i].ondragover = this.handleSquareDragOverDefault
+      squares[i].classList.remove("legal");
+      console.log(squares[i].classList);
     }
-  
-    closeDragElement(e) {
-      /* stop moving when mouse button is released:*/
-      e.preventDefault();
-      var data = e.dataTransfer.getData("Text");
-      // document.write(e.target.id);
-      if (e.target.id != (document.getElementById(data).id) && e.target.classList.contains("square")){
+  }
+
+  closeDragElement(e) {
+    /* stop moving when mouse button is released:*/
+    e.preventDefault();
+    var data = e.dataTransfer.getData("Text");
+    // document.write(e.target.id);
+    if (e.target.id != (document.getElementById(data).id) && e.target.classList.contains("square")) {
       e.target.appendChild(document.getElementById(data));
     }
     else if (e.target.getAttribute("side") != document.getElementById(data).getAttribute("side")) {
       e.target.parentElement.appendChild(document.getElementById(data));
       e.target.remove();
-  
+
     }
-    }
-    isLegalMove (e) {
-      var startPosition;
-   
-         var current = e.id.match(/[a-zA-Z]+|[0-9]+/g);
-         var horizontal = current[0];
-         var vertical = current[1];
-         var new_horiz;
-         var new_vert;
-         var new_pos;
-   
-   
-         // Rules, white soldier
-         if (e.children[0].getAttribute("type") == "wpawn"){
-           if (current[1] == "2"){
-             console.log("Starting position")
-            startPosition = true;
-           }else {
-             startPosition = false;
-           }
-        //   console.log(!(document.getElementById(current[0] + (parseInt(current[1]) + 1)).hasChildNodes()));
-           if (!document.getElementById(current[0] + (parseInt(current[1]) + 1)).hasChildNodes()) {
-             current[1] = parseInt(current[1]) + 1;
-             document.getElementById(current[0] + current[1]).classList.add('legal');
-             document.getElementById(current[0] + current[1]).ondragover = this.handleSquareDragOver;
-             // document.getElementById(current[0] + current[1]).classList.remove("square");
-           
-            //$(document.getElementById(current[0] + current[1])).css('backgroundColor', 'red');
-             console.log(document.getElementById(current[0] + current[1]));
-             if (!document.getElementById(current[0] + (parseInt(current[1]) + 1)).hasChildNodes() && startPosition)
-               current[1] = parseInt(current[1]) + 1;
-               document.getElementById(current[0] + current[1]).classList.add('legal');
-             document.getElementById(current[0] + current[1]).ondragover = this.handleSquareDragOver;
-             // document.getElementById(current[0] + current[1]).classList.remove("square");
-          
-            // $(document.getElementById(current[0] + current[1])).css('backgroundColor', 'red');
-             
-         }
-       
-         }
- 
-         if (e.children[0].getAttribute("type") == "knight"){
-          var knight_moves = {
-            upleft: [-1, 2],
-            upright: [1, 2],
-            rightup: [2, 1],
-            rightdown: [2, -1],
-            downright: [1, -2],
-            downleft: [-1, -2],
-            leftdown: [-2, -1],
-            leftup: [-2, 1]
-         };
-
-          
-    
-            //  for (const prop in knight_moves) {
-            //   // console.log(`${knight_moves[prop]}`);
-            //   // knight_movesprop;
-            //   console.log(knight_moves[prop]);
-            // }
-
-            for (const i in knight_moves){
-             try {
-             new_horiz = this.letters[this.letters.indexOf(horizontal) + knight_moves[i][0]];
-             }catch (e){
-               console.log(e + " " + "outofbound");
-
-             }
-             new_vert = parseInt(vertical) + knight_moves[i][1];
-             new_pos = new_horiz + new_vert;
-             var position = document.getElementById(new_pos);
-             if ( position != null && !position.hasChildNodes()){
-  
-             position.classList.add('legal');
-            position.ondragover = this.handleSquareDragOver;
-             }
-              if (position != null && position.hasChildNodes()){
-               console.log(position.children[0].getAttribute("side"));
-              if (position.children[0].getAttribute("side") != e.children[0].getAttribute("side")){
-                position.classList.add('legal');
-                position.ondragover = this.handleSquareDragOver;
-              }
-            }
-           }
-           
-
-             // document.getElementById(current[])
-   
-         }
-       }
-
   }
-	
+  isLegalMove(e) {
+    var startPosition;
+
+    var current = e.id.match(/[a-zA-Z]+|[0-9]+/g);
+    var horizontal = current[0];
+    var vertical = current[1];
+    var new_horiz;
+    var new_vert;
+    var new_pos;
+
+
+    // Rules, white soldier
+    if (e.children[0].getAttribute("type") == "wpawn") {
+      if (current[1] == "2") {
+        console.log("Starting position")
+        startPosition = true;
+      } else {
+        startPosition = false;
+      }
+      //   console.log(!(document.getElementById(current[0] + (parseInt(current[1]) + 1)).hasChildNodes()));
+      if (!document.getElementById(current[0] + (parseInt(current[1]) + 1)).hasChildNodes()) {
+        current[1] = parseInt(current[1]) + 1;
+        document.getElementById(current[0] + current[1]).classList.add('legal');
+        document.getElementById(current[0] + current[1]).ondragover = this.handleSquareDragOver;
+        // document.getElementById(current[0] + current[1]).classList.remove("square");
+
+        //$(document.getElementById(current[0] + current[1])).css('backgroundColor', 'red');
+        console.log(document.getElementById(current[0] + current[1]));
+        if (!document.getElementById(current[0] + (parseInt(current[1]) + 1)).hasChildNodes() && startPosition)
+          current[1] = parseInt(current[1]) + 1;
+        document.getElementById(current[0] + current[1]).classList.add('legal');
+        document.getElementById(current[0] + current[1]).ondragover = this.handleSquareDragOver;
+        // document.getElementById(current[0] + current[1]).classList.remove("square");
+
+        // $(document.getElementById(current[0] + current[1])).css('backgroundColor', 'red');
+
+      }
+
+    }
+
+    // Legal moves for Knight
+    if (e.children[0].getAttribute("type") == "knight") {
+
+      var knight_moves = {
+        upleft: [-1, 2],
+        upright: [1, 2],
+        rightup: [2, 1],
+        rightdown: [2, -1],
+        downright: [1, -2],
+        downleft: [-1, -2],
+        leftdown: [-2, -1],
+        leftup: [-2, 1]
+      };
+
+      for (const i in knight_moves) {
+        try {
+          new_horiz = this.letters[this.letters.indexOf(horizontal) + knight_moves[i][0]]; //Viable horizontal position
+        } catch (e) {
+          console.log(e + " " + "outofbound");
+
+        }
+        new_vert = parseInt(vertical) + knight_moves[i][1]; //Viable vertical position
+        new_pos = new_horiz + new_vert; //Create div name 
+        var position = document.getElementById(new_pos); //Get element with that div. It is null if not existing
+        if (position != null && !position.hasChildNodes()) { // Move is probably legal, if  there is no piece already
+
+          position.classList.add('legal');  //Show legal moves
+          position.ondragover = this.handleSquareDragOver; //Enable dropping
+        }
+        if (position != null && position.hasChildNodes()) { // Cases when there is already piece
+          console.log(position.children[0].getAttribute("side"));
+          if (position.children[0].getAttribute("side") != e.children[0].getAttribute("side")) // If pieces are different color, move is probably legal{
+            position.classList.add('legal');
+            position.ondragover = this.handleSquareDragOver;
+          }
+        }
+      
+    }
+    //Legal moves for Rook
+    if (e.children[0].getAttribute("type") == "rook") {
+    
+      
+    }
+  }
+
+}
+
 
 //openNav();
 // newGame();
 var chesstable = new Chessboard(800, 800);
+// var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+// var svg = document.getElementById("testsvg");
+// svg.setAttribute('src', 'chesspieces/Chess_bdt45.svg');
+// svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+// svg.setAttributeNS("href", "chesspieces/Chess_bdt45.svg");
+// document.body.appendChild(svg);
+// document.write(svg);
+// document.write(svg);
+addSlider();
+
+$("#VolumeValue").click(function(){ //Toggling for Volume slider
+  document.getElementById('SliderPopUp').classList.toggle("show");
+  console.log(document.getElementById('SliderPopUp').style);
+})
