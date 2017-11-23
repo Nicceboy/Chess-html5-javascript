@@ -65,7 +65,10 @@ function addSlider() {
 function closeNav() {
     if (!$(this).data('clicked')) {
         document.getElementById("mySidenav").style.left = "-200px";
-        document.getElementById('SliderPopUp').classList.remove("show");
+        var sliders = document.getElementsByClassName('SliderPopUp');
+        for (var i = 0; i < sliders.length; i++){ //Close all sliders
+            sliders[i].classList.remove("show");
+        }
         $(this).click(function () {
             $(this).data('clicked', true);
         });
@@ -514,3 +517,18 @@ $("#TimerLength").click(function () { //Toggling for Volume slider
 $("#IncreaseAmount").click(function () { //Toggling for Volume slider
     document.getElementById('IncreaseSlider').classList.toggle("show");
 })
+$("#StyledSelect").selectBoxIt({
+
+    // Uses the jQueryUI 'shake' effect when opening the drop down
+    showEffect: "shake",
+
+    // Sets the animation speed to 'slow'
+    showEffectSpeed: 'slow',
+
+    // Sets jQueryUI options to shake 1 time when opening the drop down
+    showEffectOptions: { times: 1 },
+
+    // Uses the jQueryUI 'explode' effect when closing the drop down
+    hideEffect: "explode"
+
+});

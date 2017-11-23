@@ -56,7 +56,7 @@
     <a onclick="ngameOpt('#settings')">Settings</a>
     <div id="settings" class="settings newgame" name="difficulty">
         <div class="row_wrapper">
-            <span style="float: left !important;">Difficulty: </span> <select style="display: inline-block !important;">
+            <span style="float: left !important;">Difficulty: </span> <select id ="StyledSelect" style="display: inline-block !important;">
             <option value
             "difficulty1" selected>Easy </option>
             <option value
@@ -67,9 +67,22 @@
 
         </div>
         <div class="row_wrapper">
-            <span style="float: left !important;"> Volume: </span><span id="VolumeValue" ;></span>
+
+            <span style="float: left !important;"> Volume: </span>
+
+            <span id="VolumeValue"></span>
+
+
+
             <div id="Volume" class="SliderPopUp">
-                <input type="range" min="1" max="100" value="50" class="slider" id="VolumeSlider"></div>
+
+                <input type="range" min="1" max="100" value="50" class="slider" id="VolumeSlider" name="rangeInput">
+
+
+                <!--<input oninput="rangeInput.innerHTML=amount.value"-->
+                       <!--id="box" type="text" value="0" name="amount"-->
+                       <!--for="rangeInput"  >-->
+            </div>
         </div>
 
         <div class = "row_wrapper"> <span style="float: left !important;">Timer length: </span></div> <span id="TimerLength" ;></span>
