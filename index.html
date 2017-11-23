@@ -36,8 +36,7 @@
             "savegame3">Savegame 3 </option>
             <option value
             "savegame4">Savegame 4 </option>
-        </select>
-        <br><br>
+        </select><br><br>
         <input type="button" class="okbutton" onclick="alert('Game Saved!')" value="OK">
     </div>
     <a onclick="ngameOpt('#loadgame')">Load Game</a>
@@ -51,8 +50,7 @@
             "loadgame3">Loadgame 3 </option>
             <option value
             "loadgame4">Loadgame 4 </option>
-        </select>
-        <br><br>
+        </select> <br><br>
         <input type="button" class="okbutton" onclick="alert('Game Saved!')" value="OK">
     </div>
     <a onclick="ngameOpt('#settings')">Settings</a>
@@ -65,12 +63,26 @@
             "difficulty2">Medium </option>
             <option value
             "difficulty3">Hard </option>
-        </select><br></div>
+        </select><br>
+
+        </div>
         <div class="row_wrapper">
             <span style="float: left !important;"> Volume: </span><span id="VolumeValue" ;></span>
-            <div id="SliderPopUp">
+            <div id="Volume" class="SliderPopUp">
                 <input type="range" min="1" max="100" value="50" class="slider" id="VolumeSlider"></div>
         </div>
+
+        <div class = "row_wrapper"> <span style="float: left !important;">Timer length: </span></div> <span id="TimerLength" ;></span>
+        <div id="TimerSlider" class="SliderPopUp">
+            <input type="range" min="5" max="120" value="10" class="slider" id="Timer"></div>
+    <div class = "row_wrapper"
+
+        <span style="float: left !important;">Increase per turn: </span><span id="IncreaseAmount" ;></span>
+        <div id="IncreaseSlider" class="SliderPopUp">
+            <input type="range" min="5" max="60" value="10" class="slider" id="TimerIncrease"></div>
+    </div><br><br><br>
+    <input type="button" class="okbutton" onclick="alert('Saved')" value="Save!">
+
     </div>
     <a>Training</a>
 

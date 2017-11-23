@@ -15,11 +15,18 @@ function ngameOpt(test) {
 
     if ($(test).css("display") === "none") {
         $(test).slideDown("slow");
-        document.getElementById('SliderPopUp').classList.remove("show"); //Close volume slider
+        var sliders = document.getElementsByClassName('SliderPopUp');
+        for (var i = 0; i < sliders.length; i++){ //Close all sliders
+        sliders[i].classList.remove("show");
+        }
+
         // x.style.display = "block";
     } else {
         $(test).slideUp("slow");
-        document.getElementById('SliderPopUp').classList.remove("show"); //Close volume slider
+        var sliders = document.getElementsByClassName('SliderPopUp');//Close volume slider
+        for (var i = 0; i < sliders.length; i++){
+            sliders[i].classList.remove("show");
+        }
     }
 }
 
@@ -27,11 +34,27 @@ function addSlider() {
 
     var slider = document.getElementById("VolumeSlider");
     var output = document.getElementById("VolumeValue");
+    var timerslider = document.getElementById("Timer");
+    var timeroutput = document.getElementById("TimerLength");
+    var increaseslider = document.getElementById("TimerIncrease");
+    var increaseoutput = document.getElementById("IncreaseAmount");
+
     output.innerHTML = slider.value + "%";
+    timeroutput.innerHTML = timerslider.value + "min";
+   increaseoutput.innerHTML = increaseslider.value + "s";
     // $('input').popup();
     slider.oninput = function () {
         output.innerHTML = this.value + "%";
         document.getElementById('background_audio').volume = this.value / 100; //Adjust background volume
+
+    }
+    timerslider.oninput = function () {
+        timeroutput.innerHTML = this.value + "min";
+
+
+    }
+    increaseslider.oninput = function () {
+        increaseoutput.innerHTML = this.value + "s";
 
 
     }
@@ -42,6 +65,7 @@ function addSlider() {
 function closeNav() {
     if (!$(this).data('clicked')) {
         document.getElementById("mySidenav").style.left = "-200px";
+        document.getElementById('SliderPopUp').classList.remove("show");
         $(this).click(function () {
             $(this).data('clicked', true);
         });
@@ -482,6 +506,11 @@ var chesstable = new Chessboard(800, 800);
 addSlider();
 
 $("#VolumeValue").click(function () { //Toggling for Volume slider
-    document.getElementById('SliderPopUp').classList.toggle("show");
-    console.log(document.getElementById('SliderPopUp').style);
+    document.getElementById('Volume').classList.toggle("show");
+})
+$("#TimerLength").click(function () { //Toggling for Volume slider
+    document.getElementById('TimerSlider').classList.toggle("show");
+})
+$("#IncreaseAmount").click(function () { //Toggling for Volume slider
+    document.getElementById('IncreaseSlider').classList.toggle("show");
 })

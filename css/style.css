@@ -241,7 +241,7 @@ img.resize {
 #settings.settings.newgame {
     /* line-height: 180%; */
     /* border: solid 1px yellow; */
-    padding: 8px 70px 8px 50px !important;
+    padding: 8px 70px 8px 40px !important;
     /* display: inline-block !important; */
     /* text-align: left !important; */
 }
@@ -372,15 +372,28 @@ img.resize {
     color: #4CAF50;
 }
 #VolumeValue:hover{
+    cursor: pointer;a
+
+}#TimerLength {
+     text-align: left !important;
+     color: #4CAF50;
+}
+#TimerLength:hover{
+    cursor: pointer;
+
+}#IncreaseAmount {
+     text-align: left !important;
+     color: #4CAF50;
+ }
+#IncreaseAmount:hover{
     cursor: pointer;
 
 }
-
-#SliderPopUp {
+.SliderPopUp {
 
     display: none;
 }
-#SliderPopUp.show {
+.SliderPopUp.show {
     z-index: 10;
     /* padding-left: 30px; */
     width: 20%;
@@ -395,7 +408,7 @@ img.resize {
     position: absolute;
     opacity: 0.6;
 }
-#SliderPopUp.show:hover{
+.SliderPopUp.show:hover{
     opacity: 0.9 !important;
 }
 
