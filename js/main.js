@@ -176,8 +176,8 @@ var Chessboard = class Chessboard {
 
     addPieces() {
 
-        //var letters = "abcdefgh"; //valid letters in board
-        //
+     
+        //Images of pieces
 
         var wpawn = "chesspieces/Chess_plt45.svg";
         var bpawn = "chesspieces/Chess_pdt45.svg";
@@ -416,6 +416,26 @@ var Chessboard = class Chessboard {
         var new_horiz;
         var new_vert;
         var new_pos;
+        self = this // Bind this ChessBoard to variable self. Chessboard Methods usable with self variable, in case 'this' changes inside function
+
+        var checkMove = function (ce, cposition){ //Check legal positions and add css for marking
+
+          if (cposition != null && !cposition.hasChildNodes()) { // Move is probably legal, if  there is no piece already
+            
+              cposition.classList.add('legal');  //Show legal moves
+              cposition.ondragover = self.handleSquareDragOver; //Enable dropping
+              return false;
+          }
+          if (cposition != null && cposition.hasChildNodes()) { // Cases when there is already piece
+              // console.log(cposition.children[0].getAttribute("side"));
+              if (cposition.children[0].getAttribute("side") != ce.children[0].getAttribute("side")) {// If pieces are different color, move is probably legal{
+                  cposition.classList.add('legal');
+              cposition.ondragover = self.handleSquareDragOver;
+          }
+              return true; // Returns true only, when there is piece 
+          }
+          return false;
+        }
 
 
         // Rules, white soldier
@@ -471,64 +491,91 @@ var Chessboard = class Chessboard {
                 new_vert = parseInt(vertical) + knight_moves[i][1]; //Viable vertical position
                 new_pos = new_horiz + new_vert; //Create div name
                 var position = document.getElementById(new_pos); //Get element with that div. It is null if not existing
-                if (position != null && !position.hasChildNodes()) { // Move is probably legal, if  there is no piece already
-
-                    position.classList.add('legal');  //Show legal moves
-                    position.ondragover = this.handleSquareDragOver; //Enable dropping
-                }
-                if (position != null && position.hasChildNodes()) { // Cases when there is already piece
-                    console.log(position.children[0].getAttribute("side"));
-                    if (position.children[0].getAttribute("side") != e.children[0].getAttribute("side")) // If pieces are different color, move is probably legal{
-                        position.classList.add('legal');
-                    position.ondragover = this.handleSquareDragOver;
-                }
+                checkMove(e, position); //Check if position is legal and add css for marking
             }
 
         }
         //Legal moves for Rook
         if (e.children[0].getAttribute("type") == "rook") {
 
+          var i = 1;
+          var skipup = false;
+          var skipdown = false;
+          var skipright = false;
+          var skipleft = false;
 
+          while (true){
+            
+
+          if (!skipup) {
+          new_horiz = this.letters[this.letters.indexOf(horizontal) + i];
+          new_pos = new_horiz + vertical; //Position, i amount squares upwards
+          var position = document.getElementById(new_pos);
+          if (position == null){ // Null means we are out of board
+            skipup = true;
+          }
+          if (checkMove(e, position)){ // True means, we have reached a piece. Legal move colored and allowed
+            skipup = true;
+          }
+          }
+
+          if (!skipdown){
+          new_horiz = this.letters[this.letters.indexOf(horizontal) - i];
+          new_pos = new_horiz + vertical; //Position, i amount squares downwards
+          var position = document.getElementById(new_pos);
+          if (position == null){
+            skipdown = true;
+          }
+          if (checkMove(e, position)){
+            skipdown = true;
+          }
+          }
+
+          if (!skipright){
+            new_vert = parseInt(vertical) + i;
+            new_pos = horizontal + new_vert; //Position, i amount squares right
+            var position = document.getElementById(new_pos);
+            if (position == null){
+              skipright = true;
+            }
+            if (checkMove(e, position)){
+              skipright = true;
+            }
+            }
+            if (!skipleft){
+              new_vert = parseInt(vertical) - i;
+              new_pos = horizontal + new_vert; //Position, i amount squares left
+              var position = document.getElementById(new_pos);
+              if (position == null){
+                skipleft = true;
+              }
+              if (checkMove(e, position)){
+                skipleft = true;
+              }
+              }
+
+              if (skipdown && skipleft && skipright && skipup){
+                break;
+              }
+
+              i++;
+          }
         }
     }
 
 }
 
 
-//openNav();
-// newGame();
 var chesstable = new Chessboard(800, 800);
-// var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-// var svg = document.getElementById("testsvg");
-// svg.setAttribute('src', 'chesspieces/Chess_bdt45.svg');
-// svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
-// svg.setAttributeNS("href", "chesspieces/Chess_bdt45.svg");
-// document.body.appendChild(svg);
-// document.write(svg);
-// document.write(svg);
-addSlider();
+
+addSlider(); //Functionality of sliders
 
 $("#VolumeValue").click(function () { //Toggling for Volume slider
     document.getElementById('Volume').classList.toggle("show");
 })
-$("#TimerLength").click(function () { //Toggling for Volume slider
+$("#TimerLength").click(function () { //Toggling for Timer slider
     document.getElementById('TimerSlider').classList.toggle("show");
 })
-$("#IncreaseAmount").click(function () { //Toggling for Volume slider
+$("#IncreaseAmount").click(function () { //Toggling for Timer increse slider
     document.getElementById('IncreaseSlider').classList.toggle("show");
 })
-$("#StyledSelect").selectBoxIt({
-
-    // Uses the jQueryUI 'shake' effect when opening the drop down
-    showEffect: "shake",
-
-    // Sets the animation speed to 'slow'
-    showEffectSpeed: 'slow',
-
-    // Sets jQueryUI options to shake 1 time when opening the drop down
-    showEffectOptions: { times: 1 },
-
-    // Uses the jQueryUI 'explode' effect when closing the drop down
-    hideEffect: "explode"
-
-});

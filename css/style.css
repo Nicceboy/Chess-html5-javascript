@@ -241,7 +241,7 @@ img.resize {
 #settings.settings.newgame {
     /* line-height: 180%; */
     /* border: solid 1px yellow; */
-    padding: 8px 70px 8px 40px !important;
+    padding: 8px 70px 8px 35px !important;
     /* display: inline-block !important; */
     /* text-align: left !important; */
 }
@@ -368,21 +368,21 @@ img.resize {
     cursor: pointer; /* Cursor on hover */
 }
 #VolumeValue{
-    text-align: left !important;
+    text-align: right !important;
     color: #4CAF50;
 }
 #VolumeValue:hover{
-    cursor: pointer;a
+    cursor: pointer;
 
 }#TimerLength {
-     text-align: left !important;
+     text-align: right !important;
      color: #4CAF50;
 }
 #TimerLength:hover{
     cursor: pointer;
 
 }#IncreaseAmount {
-     text-align: left !important;
+     text-align: right !important;
      color: #4CAF50;
  }
 #IncreaseAmount:hover{
