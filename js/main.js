@@ -388,7 +388,7 @@ var Chessboard = class Chessboard {
 
             squares[i].ondragover = this.handleSquareDragOverDefault
             squares[i].classList.remove("legal");
-            console.log(squares[i].classList);
+            // console.log(squares[i].classList);
         }
     }
 
@@ -409,14 +409,35 @@ var Chessboard = class Chessboard {
 
     isLegalMove(e) {
         var startPosition;
+        var new_horiz;
+        var new_vert;
+        var new_pos;
 
         var current = e.id.match(/[a-zA-Z]+|[0-9]+/g);
         var horizontal = current[0];
         var vertical = current[1];
-        var new_horiz;
-        var new_vert;
-        var new_pos;
+
         self = this // Bind this ChessBoard to variable self. Chessboard Methods usable with self variable, in case 'this' changes inside function
+
+
+        var i = 1;
+        
+        //'Skipvariables' change true, when loop faces a chess piece. Rest of the squares in that direction will be skipped.
+
+        //Rook/Queen move possibilities
+        self.skipup = false; 
+        self.skipdown = false;
+        self.skipright = false;
+        self.skipleft = false;
+
+        //Bishop/Queen move possibilities
+        self.skipupright = false;
+        self.skipdownright = false;
+        self.skipdownleft = false;
+        self.skipupleft = false;
+
+
+
 
         var checkMove = function (ce, cposition){ //Check legal positions and add css for marking
 
@@ -436,6 +457,74 @@ var Chessboard = class Chessboard {
           }
           return false;
         }
+        var changeCoord = function (horizontal, vertical, moveset, i, skip) { //Changes coordinate, checks state of new coordinate. Marks directions checked afterwards
+    
+
+                  switch (moveset){
+                    //Case 1: Go Upwards
+                    //Case 2: Go Downwards
+                    //Case 3: Go Right
+                    //Case 4: Go Left
+                    //Case 5: Go TopRight
+                    //Case 6: Go RightDown
+                    //Case 7: Go Downleft
+                    //Case 8: Go LeftUp
+                  
+                  case 1:
+                  new_horiz = self.letters[self.letters.indexOf(horizontal) + i];
+                  new_pos = new_horiz + vertical; //Position, i amount squares upwards
+                  break;
+
+                  case 2:
+                  new_horiz = self.letters[self.letters.indexOf(horizontal) - i];
+                  new_pos = new_horiz + vertical; //Position, i amount squares downwards
+                  break;
+
+                  case 3:
+                  new_vert = parseInt(vertical) + i;
+                  new_pos = horizontal + new_vert; //Position, i amount squares right
+                  break;
+
+                  case 4:
+                  new_vert = parseInt(vertical) - i;
+                  new_pos = horizontal + new_vert; //Position, i amount squares left
+                  break;
+
+                  case 5:
+                  new_horiz = self.letters[self.letters.indexOf(horizontal) + i];
+                  new_vert = parseInt(vertical) + i;
+                  new_pos = new_horiz + new_vert; //Position, i amount squares upright
+                  break;
+
+                  case 6:
+                  new_horiz = self.letters[self.letters.indexOf(horizontal) + i];
+                  new_vert = parseInt(vertical) - i;
+                  new_pos = new_horiz + new_vert; //Position, i amount squares rightdown
+                  break;
+
+                  case 7:
+                  new_horiz = self.letters[self.letters.indexOf(horizontal) - i];
+                  new_vert = parseInt(vertical) - i;
+                  new_pos = new_horiz + new_vert; //Position, i amount squares leftdown
+                  break;
+
+                  case 8:
+                  new_horiz = self.letters[self.letters.indexOf(horizontal) - i];
+                  new_vert = parseInt(vertical) + i;
+                  new_pos = new_horiz + new_vert; //Position, i amount squares leftup
+                  break;
+
+
+                  }
+                  var position = document.getElementById(new_pos);
+                  if (position == null){ // Null means we are out of board
+                    self[skip] = true; //Sets class parameter true by given variable name. Nothing in that direction
+                  }
+                  if (checkMove(e, position)){ // True means, we have reached a piece. Legal move colored and allowed
+                    self[skip] = true;
+                  }
+                  }
+
 
 
         // Rules, white soldier
@@ -498,63 +587,39 @@ var Chessboard = class Chessboard {
         //Legal moves for Rook
         if (e.children[0].getAttribute("type") == "rook") {
 
-          var i = 1;
-          var skipup = false;
-          var skipdown = false;
-          var skipright = false;
-          var skipleft = false;
+
 
           while (true){
+          //Case 1: Go Upwards
+          //Case 2: Go Downwards
+          //Case 3: Go Right
+          //Case 4: Go Left
+          //Case 5: Go TopRight
+          //Case 6: Go RightDown
+          //Case 7: Go Downleft
+          //Case 8: Go LeftUp
             
+          if (!self.skipup) { //Let's scheck next position upwards, if it is not allowed to skip yet
 
-          if (!skipup) {
-          new_horiz = this.letters[this.letters.indexOf(horizontal) + i];
-          new_pos = new_horiz + vertical; //Position, i amount squares upwards
-          var position = document.getElementById(new_pos);
-          if (position == null){ // Null means we are out of board
-            skipup = true;
+          changeCoord(horizontal, vertical, 1, i, 'skipup');
           }
-          if (checkMove(e, position)){ // True means, we have reached a piece. Legal move colored and allowed
-            skipup = true;
+          
+          if (!self.skipdown) {
+              
+          changeCoord(horizontal, vertical, 2, i, 'skipdown');
           }
+          
+          if (!self.skipright) {
+            
+          changeCoord(horizontal, vertical, 3, i, 'skipright');
           }
-
-          if (!skipdown){
-          new_horiz = this.letters[this.letters.indexOf(horizontal) - i];
-          new_pos = new_horiz + vertical; //Position, i amount squares downwards
-          var position = document.getElementById(new_pos);
-          if (position == null){
-            skipdown = true;
-          }
-          if (checkMove(e, position)){
-            skipdown = true;
-          }
+          if (!self.skipleft) {
+            
+          changeCoord(horizontal, vertical, 4, i, 'skipleft');
           }
 
-          if (!skipright){
-            new_vert = parseInt(vertical) + i;
-            new_pos = horizontal + new_vert; //Position, i amount squares right
-            var position = document.getElementById(new_pos);
-            if (position == null){
-              skipright = true;
-            }
-            if (checkMove(e, position)){
-              skipright = true;
-            }
-            }
-            if (!skipleft){
-              new_vert = parseInt(vertical) - i;
-              new_pos = horizontal + new_vert; //Position, i amount squares left
-              var position = document.getElementById(new_pos);
-              if (position == null){
-                skipleft = true;
-              }
-              if (checkMove(e, position)){
-                skipleft = true;
-              }
-              }
 
-              if (skipdown && skipleft && skipright && skipup){
+              if (self.skipdown && self.skipleft && self.skipright && self.skipup){ //Checks if every direction is handled
                 break;
               }
 
