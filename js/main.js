@@ -413,9 +413,13 @@ var Chessboard = class Chessboard {
         var new_vert;
         var new_pos;
 
+        var piece_type = e.children[0].getAttribute("type");
         var current = e.id.match(/[a-zA-Z]+|[0-9]+/g);
         var horizontal = current[0];
         var vertical = current[1];
+
+        var loop_enabler = true; //Helps to reuse code of rook/bishop movetesters. 
+        //By setting FALSE, only squares next to are checked. Ideal to king moveset
 
         self = this // Bind this ChessBoard to variable self. Chessboard Methods usable with self variable, in case 'this' changes inside function
 
@@ -431,10 +435,10 @@ var Chessboard = class Chessboard {
         self.skipleft = false;
 
         //Bishop/Queen move possibilities
-        self.skipupright = false;
-        self.skipdownright = false;
-        self.skipdownleft = false;
-        self.skipupleft = false;
+        self.skiprightup = false;
+        self.skiprightdown = false;
+        self.skipleftdown = false;
+        self.skipleftup = false;
 
 
 
@@ -493,7 +497,7 @@ var Chessboard = class Chessboard {
                   case 5:
                   new_horiz = self.letters[self.letters.indexOf(horizontal) + i];
                   new_vert = parseInt(vertical) + i;
-                  new_pos = new_horiz + new_vert; //Position, i amount squares upright
+                  new_pos = new_horiz + new_vert; //Position, i amount squares rightup
                   break;
 
                   case 6:
@@ -525,10 +529,82 @@ var Chessboard = class Chessboard {
                   }
                   }
 
+                  var rook_func = function(){
 
+                    //Case 1: Go Upwards
+                    //Case 2: Go Downwards
+                    //Case 3: Go Right
+                    //Case 4: Go Left
+
+                    do {
+                      
+                    if (!self.skipup) { //Let's scheck next position upwards, if it is not allowed to skip yet. And so on.
+          
+                    changeCoord(horizontal, vertical, 1, i, 'skipup');
+                    }
+                    
+                    if (!self.skipdown) {
+                        
+                    changeCoord(horizontal, vertical, 2, i, 'skipdown');
+                    }
+                    
+                    if (!self.skipright) {
+                      
+                    changeCoord(horizontal, vertical, 3, i, 'skipright');
+                    }
+                    if (!self.skipleft) {
+                      
+                    changeCoord(horizontal, vertical, 4, i, 'skipleft');
+                    }
+          
+          
+                        if (self.skipdown && self.skipleft && self.skipright && self.skipup){ //Checks if every direction is handled
+                          break;
+                        }
+          
+                        i++;
+                    } while (loop_enabler);
+                  }
+                  
+          var bishop_func = function(){
+
+              //Case 5: Go TopRight
+              //Case 6: Go RightDown
+              //Case 7: Go Downleft
+              //Case 8: Go LeftUp
+
+            do {
+  
+              if (!self.skiprightup) { //Let's scheck next position upwards, if it is not allowed to skip yet. And so on.
+              
+                changeCoord(horizontal, vertical, 5, i, 'skiprightup');
+                }
+                
+                if (!self.skiprightdown) {
+                    
+                changeCoord(horizontal, vertical, 6, i, 'skiprightdown');
+                }
+                
+                if (!self.skipleftdown) {
+                  
+                changeCoord(horizontal, vertical, 7, i, 'skipleftdown');
+                }
+                if (!self.skipleftup) {
+                  
+                changeCoord(horizontal, vertical, 8, i, 'skipleftup');
+                }
+                if (self.skiprightup && self.skiprightdown && self.skipleftdown && self.skipleftup){ //Checks if every direction is handled
+                  break;
+                }
+  
+                i++;
+  
+                } while (loop_enabler);
+  
+              }
 
         // Rules, white soldier
-        if (e.children[0].getAttribute("type") == "wpawn") {
+        if (piece_type == "wpawn") {
             if (current[1] == "2") {
                 console.log("Starting position")
                 startPosition = true;
@@ -557,7 +633,7 @@ var Chessboard = class Chessboard {
         }
 
         // Legal moves for Knight
-        if (e.children[0].getAttribute("type") == "knight") {
+        if (piece_type == "knight") { //Special case
 
             var knight_moves = {
                 upleft: [-1, 2],
@@ -585,50 +661,34 @@ var Chessboard = class Chessboard {
 
         }
         //Legal moves for Rook
-        if (e.children[0].getAttribute("type") == "rook") {
+        if (piece_type == "rook") {
 
 
+          rook_func();
+        }
+        if (piece_type == "bishop"){
 
-          while (true){
-          //Case 1: Go Upwards
-          //Case 2: Go Downwards
-          //Case 3: Go Right
-          //Case 4: Go Left
-          //Case 5: Go TopRight
-          //Case 6: Go RightDown
-          //Case 7: Go Downleft
-          //Case 8: Go LeftUp
-            
-          if (!self.skipup) { //Let's scheck next position upwards, if it is not allowed to skip yet
+         bishop_func();
 
-          changeCoord(horizontal, vertical, 1, i, 'skipup');
           }
-          
-          if (!self.skipdown) {
-              
-          changeCoord(horizontal, vertical, 2, i, 'skipdown');
+          if (piece_type == "queen"){
+            rook_func();
+            i =1; //Reset i for easy reuse of older functions. Checking moves of rook and bishop
+            bishop_func();
           }
-          
-          if (!self.skipright) {
-            
-          changeCoord(horizontal, vertical, 3, i, 'skipright');
-          }
-          if (!self.skipleft) {
-            
-          changeCoord(horizontal, vertical, 4, i, 'skipleft');
+          if (piece_type == "king"){
+            loop_enabler = false;
+            rook_func();
+            i = 1; //Reset i because previous function increases it once.
+            bishop_func();
+
           }
 
 
-              if (self.skipdown && self.skipleft && self.skipright && self.skipup){ //Checks if every direction is handled
-                break;
-              }
-
-              i++;
-          }
         }
     }
 
-}
+
 
 
 var chesstable = new Chessboard(800, 800);
