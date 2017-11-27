@@ -3,7 +3,10 @@ var Chessboard = class Chessboard {
         this.letters = "abcdefgh";
         this.height = height;
         this.width = width;
+        
         var self = this;
+
+        self.currentTurn = 'white';
         // var $tempobj = $("<div>").css('display', 'none').addClass("square");
         // $("body").append($tempobj);
         // console.log($tempobj.css("border-width"));
@@ -45,9 +48,9 @@ var Chessboard = class Chessboard {
             // dragElement(test);
             //Board has 64 childs: squares
             square.style.backgroundColor = parseInt((i / 8) + i)
-            % 2 == 0 ? 'white' : '#ababab';
+                % 2 == 0 ? 'white' : '#ababab';
             square.setAttribute("color", parseInt((i / 8) + i)
-            % 2 == 0 ? 'white' : 'black');
+                % 2 == 0 ? 'white' : 'black');
 
             document.getElementById("mainChessBoard").appendChild(square);
             var number = document.createTextNode(test);
@@ -61,7 +64,7 @@ var Chessboard = class Chessboard {
 
     addPieces() {
 
-     
+
         //Images of pieces
 
         var wpawn = "chesspieces/Chess_plt45.svg";
@@ -245,8 +248,8 @@ var Chessboard = class Chessboard {
     }
 
     handleSquareDragDrop() {
-
         this.classList.remove('over'); // Remove 'over' effect from square
+     
 
     }
 
@@ -284,21 +287,36 @@ var Chessboard = class Chessboard {
         // document.write(e.target.id);
         if (e.target.id != (document.getElementById(data).id) && e.target.classList.contains("square")) {
             e.target.appendChild(document.getElementById(data));
+            
         }
         else if (e.target.getAttribute("side") != document.getElementById(data).getAttribute("side")) {
             e.target.parentElement.appendChild(document.getElementById(data));
             e.target.remove();
 
         }
+        if (e.target.children[0].getAttribute("side") == 'white'){ //Changes turn
+            self.currentTurn = 'black';
+        }
+        else {
+            self.currentTurn = 'white';
+        }
     }
 
     isLegalMove(e) {
         var startPosition;
+
         var new_horiz;
         var new_vert;
         var new_pos;
 
+        self = this // Bind this ChessBoard to variable self. Chessboard Methods usable with self variable, in case 'this' changes inside function
+
         var piece_type = e.children[0].getAttribute("type");
+        if (e.children[0].getAttribute("side") != self.currentTurn)
+        {
+            console.log('It is ' + self.currentTurn + 's turn');
+            return 0;
+        }
         var current = e.id.match(/[a-zA-Z]+|[0-9]+/g);
         var horizontal = current[0];
         var vertical = current[1];
@@ -306,15 +324,15 @@ var Chessboard = class Chessboard {
         var loop_enabler = true; //Helps to reuse code of rook/bishop movetesters. While true, allows as to check as many squares as move is leag
         //By setting FALSE, only squares next to are checked. Ideal to king moveset
 
-        self = this // Bind this ChessBoard to variable self. Chessboard Methods usable with self variable, in case 'this' changes inside function
+        
 
 
         var i = 1;
-        
+
         //'Skipvariables' change true, when loop faces a chess piece. Rest of the squares in that direction will be skipped.
 
         //Rook/Queen move possibilities
-        self.skipup = false; 
+        self.skipup = false;
         self.skipdown = false;
         self.skipright = false;
         self.skipleft = false;
@@ -326,196 +344,218 @@ var Chessboard = class Chessboard {
         self.skipleftup = false;
 
 
+        var checkMove = function (ce, cposition) { //Check legal positions and add css for marking
 
+            if (cposition != null && !cposition.hasChildNodes()) { // Move is probably legal, if  there is no piece already
 
-        var checkMove = function (ce, cposition){ //Check legal positions and add css for marking
-
-          if (cposition != null && !cposition.hasChildNodes()) { // Move is probably legal, if  there is no piece already
-            
-              cposition.classList.add('legal');  //Show legal moves
-              cposition.ondragover = self.handleSquareDragOver; //Enable dropping
-              return false;
-          }
-          if (cposition != null && cposition.hasChildNodes()) { // Cases when there is already piece
-              // console.log(cposition.children[0].getAttribute("side"));
-              if (cposition.children[0].getAttribute("side") != ce.children[0].getAttribute("side")) {// If pieces are different color, move is probably legal{
-                  cposition.classList.add('legal');
-              cposition.ondragover = self.handleSquareDragOver;
-          }
-              return true; // Returns true only, when there is piece 
-          }
-          return false;
+                cposition.classList.add('legal');  //Show legal moves
+                cposition.ondragover = self.handleSquareDragOver; //Enable dropping
+                return false;
+            }
+            if (cposition != null && cposition.hasChildNodes()) { // Cases when there is already piece
+                // console.log(cposition.children[0].getAttribute("side"));
+                if (cposition.children[0].getAttribute("side") != ce.children[0].getAttribute("side")) {// If pieces are different color, move is probably legal{
+                    cposition.classList.add('legal');
+                    cposition.ondragover = self.handleSquareDragOver;
+                }
+                return true; // Returns true only, when there is piece 
+            }
+            return false;
         }
         var changeCoord = function (horizontal, vertical, moveset, i, skip) { //Changes coordinate, checks state of new coordinate. Marks directions checked afterwards
-    
-
-                  switch (moveset){
-                    //Case 1: Go Upwards
-                    //Case 2: Go Downwards
-                    //Case 3: Go Right
-                    //Case 4: Go Left
-                    //Case 5: Go TopRight
-                    //Case 6: Go RightDown
-                    //Case 7: Go Downleft
-                    //Case 8: Go LeftUp
-                  
-                  case 1:
-                  new_horiz = self.letters[self.letters.indexOf(horizontal) + i];
-                  new_pos = new_horiz + vertical; //Position, i amount squares upwards
-                  break;
-
-                  case 2:
-                  new_horiz = self.letters[self.letters.indexOf(horizontal) - i];
-                  new_pos = new_horiz + vertical; //Position, i amount squares downwards
-                  break;
-
-                  case 3:
-                  new_vert = parseInt(vertical) + i;
-                  new_pos = horizontal + new_vert; //Position, i amount squares right
-                  break;
-
-                  case 4:
-                  new_vert = parseInt(vertical) - i;
-                  new_pos = horizontal + new_vert; //Position, i amount squares left
-                  break;
-
-                  case 5:
-                  new_horiz = self.letters[self.letters.indexOf(horizontal) + i];
-                  new_vert = parseInt(vertical) + i;
-                  new_pos = new_horiz + new_vert; //Position, i amount squares rightup
-                  break;
-
-                  case 6:
-                  new_horiz = self.letters[self.letters.indexOf(horizontal) + i];
-                  new_vert = parseInt(vertical) - i;
-                  new_pos = new_horiz + new_vert; //Position, i amount squares rightdown
-                  break;
-
-                  case 7:
-                  new_horiz = self.letters[self.letters.indexOf(horizontal) - i];
-                  new_vert = parseInt(vertical) - i;
-                  new_pos = new_horiz + new_vert; //Position, i amount squares leftdown
-                  break;
-
-                  case 8:
-                  new_horiz = self.letters[self.letters.indexOf(horizontal) - i];
-                  new_vert = parseInt(vertical) + i;
-                  new_pos = new_horiz + new_vert; //Position, i amount squares leftup
-                  break;
 
 
-                  }
-                  var position = document.getElementById(new_pos);
-                  if (position == null){ // Null means we are out of board
-                    self[skip] = true; //Sets class parameter true by given variable name. Last legal move reached
-                  }
-                  if (checkMove(e, position)){ // True means, we have reached a piece. Legal move colored and allowed
-                    self[skip] = true;
-                  }
-                  }
+            switch (moveset) {
+                //Case 1: Go Upwards
+                //Case 2: Go Downwards
+                //Case 3: Go Right
+                //Case 4: Go Left
+                //Case 5: Go TopRight
+                //Case 6: Go RightDown
+                //Case 7: Go Downleft
+                //Case 8: Go LeftUp
 
-                  var rook_func = function(){
+                case 1:
+                    new_vert = parseInt(vertical) + i;
+                    new_pos = horizontal + new_vert; //Position, i amount squares upwards
+                    break;
 
-                    //Case 1: Go Upwards
-                    //Case 2: Go Downwards
-                    //Case 3: Go Right
-                    //Case 4: Go Left
+                case 2:
+                    new_vert = parseInt(vertical) - i;
+                    new_pos = horizontal + new_vert; //Position, i amount squares downwards
+                    break;
 
-                    do {
-                      
-                    if (!self.skipup) { //Let's scheck next position upwards, if it is not allowed to skip yet. And so on.
-          
-                    changeCoord(horizontal, vertical, 1, i, 'skipup');
-                    }
-                    
-                    if (!self.skipdown) {
-                        
-                    changeCoord(horizontal, vertical, 2, i, 'skipdown');
-                    }
-                    
-                    if (!self.skipright) {
-                      
-                    changeCoord(horizontal, vertical, 3, i, 'skipright');
-                    }
-                    if (!self.skipleft) {
-                      
-                    changeCoord(horizontal, vertical, 4, i, 'skipleft');
-                    }
-          
-          
-                        if (self.skipdown && self.skipleft && self.skipright && self.skipup){ //Checks if every direction is handled
-                          break;
-                        }
-          
-                        i++;
-                    } while (loop_enabler);
-                  }
-                  
-          var bishop_func = function(){
+                case 3:
+                    new_horiz = self.letters[self.letters.indexOf(horizontal) + i];
+                    new_pos = new_horiz + vertical; //Position, i amount squares right
+                    break;
 
-              //Case 5: Go TopRight
-              //Case 6: Go RightDown
-              //Case 7: Go Downleft
-              //Case 8: Go LeftUp
+                case 4:
+                    new_horiz = self.letters[self.letters.indexOf(horizontal) - i];
+                    new_pos = new_horiz + vertical; //Position, i amount squares left
+                    break;
+
+                case 5:
+                    new_horiz = self.letters[self.letters.indexOf(horizontal) + i];
+                    new_vert = parseInt(vertical) + i;
+                    new_pos = new_horiz + new_vert; //Position, i amount squares rightup
+                    break;
+
+                case 6:
+                    new_horiz = self.letters[self.letters.indexOf(horizontal) + i];
+                    new_vert = parseInt(vertical) - i;
+                    new_pos = new_horiz + new_vert; //Position, i amount squares rightdown
+                    break;
+
+                case 7:
+                    new_horiz = self.letters[self.letters.indexOf(horizontal) - i];
+                    new_vert = parseInt(vertical) - i;
+                    new_pos = new_horiz + new_vert; //Position, i amount squares leftdown
+                    break;
+
+                case 8:
+                    new_horiz = self.letters[self.letters.indexOf(horizontal) - i];
+                    new_vert = parseInt(vertical) + i;
+                    new_pos = new_horiz + new_vert; //Position, i amount squares leftup
+                    break;
+
+
+            }
+            var position = document.getElementById(new_pos);
+            if (position == null) { // Null means we are out of board
+                self[skip] = true; //Sets class parameter true by given variable name. Last legal move reached
+            }
+            if (checkMove(e, position)) { // True means, we have reached a piece. Legal move colored and allowed
+                self[skip] = true;
+            }
+        }
+
+        var rook_func = function () {
+
+            //Case 1: Go Upwards
+            //Case 2: Go Downwards
+            //Case 3: Go Right
+            //Case 4: Go Left
 
             do {
-  
-              if (!self.skiprightup) { //Let's scheck next position upwards, if it is not allowed to skip yet. And so on.
-              
-                changeCoord(horizontal, vertical, 5, i, 'skiprightup');
+
+                if (!self.skipup) { //Let's scheck next position upwards, if it is not allowed to skip yet. And so on.
+
+                    changeCoord(horizontal, vertical, 1, i, 'skipup');
                 }
-                
+
+                if (!self.skipdown) {
+
+                    changeCoord(horizontal, vertical, 2, i, 'skipdown');
+                }
+
+                if (!self.skipright) {
+
+                    changeCoord(horizontal, vertical, 3, i, 'skipright');
+                }
+                if (!self.skipleft) {
+
+                    changeCoord(horizontal, vertical, 4, i, 'skipleft');
+                }
+
+
+                if (self.skipdown && self.skipleft && self.skipright && self.skipup) { //Checks if every direction is handled
+                    break;
+                }
+
+                i++;
+            } while (loop_enabler);
+        }
+
+        var bishop_func = function () {
+
+            //Case 5: Go TopRight
+            //Case 6: Go RightDown
+            //Case 7: Go Downleft
+            //Case 8: Go LeftUp
+
+            do {
+
+                if (!self.skiprightup) { //Let's scheck next position upwards, if it is not allowed to skip yet. And so on.
+
+                    changeCoord(horizontal, vertical, 5, i, 'skiprightup');
+                }
+
                 if (!self.skiprightdown) {
-                    
-                changeCoord(horizontal, vertical, 6, i, 'skiprightdown');
+
+                    changeCoord(horizontal, vertical, 6, i, 'skiprightdown');
                 }
-                
+
                 if (!self.skipleftdown) {
-                  
-                changeCoord(horizontal, vertical, 7, i, 'skipleftdown');
+
+                    changeCoord(horizontal, vertical, 7, i, 'skipleftdown');
                 }
                 if (!self.skipleftup) {
-                  
-                changeCoord(horizontal, vertical, 8, i, 'skipleftup');
+
+                    changeCoord(horizontal, vertical, 8, i, 'skipleftup');
                 }
-                if (self.skiprightup && self.skiprightdown && self.skipleftdown && self.skipleftup){ //Checks if every direction is handled
-                  break;
+                if (self.skiprightup && self.skiprightdown && self.skipleftdown && self.skipleftup) { //Checks if every direction is handled
+                    break;
                 }
-  
+
                 i++;
-  
-                } while (loop_enabler);
-  
-              }
 
-        // Rules, white soldier
-        if (piece_type == "wpawn") {
-            if (current[1] == "2") {
-                console.log("Starting position")
-                startPosition = true;
-            } else {
-                startPosition = false;
-            }
-            //   console.log(!(document.getElementById(current[0] + (parseInt(current[1]) + 1)).hasChildNodes()));
-            if (!document.getElementById(current[0] + (parseInt(current[1]) + 1)).hasChildNodes()) {
-                current[1] = parseInt(current[1]) + 1;
-                document.getElementById(current[0] + current[1]).classList.add('legal');
-                document.getElementById(current[0] + current[1]).ondragover = this.handleSquareDragOver;
-                // document.getElementById(current[0] + current[1]).classList.remove("square");
-
-                //$(document.getElementById(current[0] + current[1])).css('backgroundColor', 'red');
-                console.log(document.getElementById(current[0] + current[1]));
-                if (!document.getElementById(current[0] + (parseInt(current[1]) + 1)).hasChildNodes() && startPosition)
-                    current[1] = parseInt(current[1]) + 1;
-                document.getElementById(current[0] + current[1]).classList.add('legal');
-                document.getElementById(current[0] + current[1]).ondragover = this.handleSquareDragOver;
-                // document.getElementById(current[0] + current[1]).classList.remove("square");
-
-                // $(document.getElementById(current[0] + current[1])).css('backgroundColor', 'red');
-
-            }
+            } while (loop_enabler);
 
         }
+
+        var pawn_func = function (startNumber, moves, sideVar, moveNames) {
+
+            if (current[1] == startNumber) {
+                startPosition = true; //Pawn hasn't been moved yet
+            } else {
+                startPosition = false; //Pawn has been moved. Special move isn't allowed.
+            }
+
+            if (!document.getElementById(horizontal + (parseInt(vertical) + sideVar)).hasChildNodes()) {
+                console.log(horizontal, vertical);
+                changeCoord(horizontal, vertical, moves[0], i, moveNames[0]);
+
+                if (!document.getElementById(horizontal + (parseInt(vertical) + (2 * sideVar))).hasChildNodes() && startPosition) {//Can move 2 squares at once at first move
+                    changeCoord(horizontal, vertical, moves[0], 2, moveNames[0]);
+                }
+            }
+            //Following moves allow capturing
+            try {
+                if (document.getElementById(self.letters[self.letters.indexOf(horizontal) + sideVar] + (parseInt(vertical) + sideVar)).hasChildNodes()) {
+                    changeCoord(horizontal, vertical, moves[1], i, moveNames[1]);
+                }
+            } catch (e1) {
+                console.log("Piece in right border.");
+            }
+            try {
+                if (document.getElementById(self.letters[self.letters.indexOf(horizontal) - sideVar] + (parseInt(vertical) + sideVar)).hasChildNodes()) {
+                    changeCoord(horizontal, vertical, moves[2], i, moveNames[2]);
+                }
+            } catch (e2) {
+                console.log("Piece in left border.");
+            }
+
+
+
+        }
+
+        // Rules, white pawn
+        if (piece_type == "wpawn") {
+            var moveMethods = [1, 5, 8];
+            var moveNames = ['skipup', 'skiprightup', 'skipleftup']
+
+            pawn_func(2, moveMethods, 1, moveNames);
+        }
+        //Rules, black pawn
+        if (piece_type == "bpawn") {
+
+            var moveMethods = [2, 7, 6];
+            var moveNames = ['skipdown', 'skipleftdown', 'skiprightdown']
+            pawn_func(7, moveMethods, -1, moveNames);
+
+        }
+
 
         // Legal moves for Knight
         if (piece_type == "knight") { //Special case
@@ -547,24 +587,25 @@ var Chessboard = class Chessboard {
         }
         //Legal moves for Rook
         if (piece_type == "rook") {
-          rook_func();
+            rook_func();
         }
-        if (piece_type == "bishop"){
-         bishop_func();
-          }
-          if (piece_type == "queen"){
+        if (piece_type == "bishop") {
+            bishop_func();
+        }
+        if (piece_type == "queen") {
             rook_func();
             i = 1; //Reset i for easy re-use of older functions. Checking moves of rook and bishop
             bishop_func();
-          }
-          if (piece_type == "king"){
+        }
+        if (piece_type == "king") {
             loop_enabler = false;
             rook_func();
             i = 1; //Reset i because previous function still increases it once.
             bishop_func();
 
-          }
-
-
         }
+        
+    
+
     }
+}
