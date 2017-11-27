@@ -285,6 +285,13 @@ var Chessboard = class Chessboard {
         e.preventDefault();
         var data = e.dataTransfer.getData("Text");
         // document.write(e.target.id);
+        if (document.getElementById(data).getAttribute("side") == 'white'){ //Changes
+            self.currentTurn = 'black';
+        }
+        else {
+            self.currentTurn = 'white';
+        }
+
         if (e.target.id != (document.getElementById(data).id) && e.target.classList.contains("square")) {
             e.target.appendChild(document.getElementById(data));
             
@@ -294,12 +301,7 @@ var Chessboard = class Chessboard {
             e.target.remove();
 
         }
-        if (e.target.children[0].getAttribute("side") == 'white'){ //Changes turn
-            self.currentTurn = 'black';
-        }
-        else {
-            self.currentTurn = 'white';
-        }
+    
     }
 
     isLegalMove(e) {
