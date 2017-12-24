@@ -120,6 +120,8 @@ function stopDefault(e) {
 
 var chesstable = new Chessboard(800, 800);
 
+
+
 addSlider(); //Functionality of sliders
 
 $("#VolumeValue").click(function () { //Toggling for Volume slider

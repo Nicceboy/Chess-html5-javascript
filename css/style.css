@@ -1,14 +1,18 @@
 @font-face {
     font-family: 'Ubuntu-R';
-    src: url("ubuntu_font/Ubuntu-R.ttf");
+    src: url("../ubuntu_font/Ubuntu-R.ttf");
 }
 @font-face {
     font-family: 'Ubuntu-B';
-    src: url("ubuntu_font/Ubuntu-B.ttf");
+    src: url("../ubuntu_font/Ubuntu-B.ttf");
+}
+@font-face {
+    font-family: 'Ubuntu-L';
+    src: url("../ubuntu_font/Ubuntu-L.ttf");
 }
 @font-face {
     font-family: 'Ubuntu-M';
-    src: url("ubuntu_font/Ubuntu-M.ttf");
+    src: url("../ubuntu_font/Ubuntu-M.ttf");
 }
 ::-webkit-scrollbar {
     width: 12px;
@@ -28,7 +32,7 @@
 }
 
 body, html {
-    font-family: Ubuntu-R, serif;
+    font-family: Ubuntu-R;
 
     -webkit-font-smoothing: antialiased !important;
 
@@ -488,4 +492,17 @@ img.resize {
     user-select: none;
 
 
+}
+#bigterminal {
+    display: block;
+    width: 828px;
+    margin: 6px 0% 6px 35%;
+    /* width: 300px; */
+    /* width : 20%; */
+    border: 6px solid black;
+    border-radius: 5% 5% 5% 5%;
+    text-align: center;
+    /* padding-left:50%;  */
+    font-size:70px;
+    background: WHITE;
 }

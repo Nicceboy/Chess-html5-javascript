@@ -5,8 +5,11 @@ var Chessboard = class Chessboard {
         this.width = width;
         
         var self = this;
-
+        self.terminalT = document.getElementById("TerminalText");
         self.currentTurn = 'white';
+        self.terminalT.innerHTML = self.currentTurn.toUpperCase() + ' is starting';
+        self.timerLenght = document.getElementById("Timer").value;
+        // self.terminalT.innerHTML = self.timerLenght;
         // var $tempobj = $("<div>").css('display', 'none').addClass("square");
         // $("body").append($tempobj);
         // console.log($tempobj.css("border-width"));
@@ -222,6 +225,8 @@ var Chessboard = class Chessboard {
 
         // addPieces();
         this.createBoard();
+        self.currentTurn = 'white';
+        self.terminalT.innerHTML = self.currentTurn.toUpperCase() + ' is starting';
     }
 
 
@@ -257,6 +262,19 @@ var Chessboard = class Chessboard {
         elmnt.ondragstart = this.elementDragStart.bind(this);
         elmnt.ondragend = this.elementDragEnd;
         document.ondrop = this.closeDragElement;
+        elmnt.onclick = this.onElementclick.bind(this);    }
+    onElementclick(e){
+        console.log(e);
+        if( e.target.parentElement.classList.contains("legal")){
+            this.elementDragEnd();
+        }
+        else {
+        e.target.parentElement.classList.add('legal');
+        this.isLegalMove(e.target.parentElement, false);
+        }
+    }
+    testclick(){
+        self.terminalT.innerHTML = 'klikkasin';
     }
 
 
@@ -265,7 +283,7 @@ var Chessboard = class Chessboard {
         e = e || window.event;
         e.dataTransfer.setData("Text", e.target.id);
         e.dataTransfer.effectAllowed = "move";
-        this.isLegalMove(e.target.parentElement); // Check legal moves from starting position
+        this.isLegalMove(e.target.parentElement, false); // Check legal moves from starting position
 
     }
 
@@ -285,12 +303,12 @@ var Chessboard = class Chessboard {
         e.preventDefault();
         var data = e.dataTransfer.getData("Text");
         // document.write(e.target.id);
-        if (document.getElementById(data).getAttribute("side") == 'white'){ //Changes
-            self.currentTurn = 'black';
-        }
-        else {
-            self.currentTurn = 'white';
-        }
+        // if (document.getElementById(data).getAttribute("side") == 'white'){ //Changes turn
+        //     self.currentTurn = 'black';
+        // }
+        // else {
+        //     self.currentTurn = 'white';
+        // }
 
         if (e.target.id != (document.getElementById(data).id) && e.target.classList.contains("square")) {
             e.target.appendChild(document.getElementById(data));
@@ -301,22 +319,63 @@ var Chessboard = class Chessboard {
             e.target.remove();
 
         }
+
+      
+    //    setTimeout(self.afterTwoSeconds, 2000);
+       if (document.getElementById(data).getAttribute("side") == 'white'){ //Changes turn
+        self.currentTurn = 'black';
     
     }
+    else {
+        self.currentTurn = 'white';
+    }
+    self.terminalT.innerHTML = self.currentTurn.toUpperCase()+ ' TURN';
+    self.isCheck();
+    }
+   
+    
+    isCheck (){
+        var squares = document.getElementsByClassName("square");
+        console.log(squares.length);
+        var kingcounter = 0;
+        var king;
+        var i = 0;
+                while (kingcounter < 2) { //Reset allowed actions
+                    if(squares[i].hasChildNodes()){
+        
+                    if (squares[i].children[0].getAttribute("type") == 'king'   ){ 
+                        // console.log((squares[i].children[0].getAttribute("side")));
+                        // && squares[i].children[0].getAttribute("side") == this.currentTurn
+                        king = squares[i].children[0];
+                        console.log(king);
+                        this.isLegalMove(king.parentElement, true);
+                        kingcounter++;
+                    }
+              
+                }
+                i++;// console.log(squares[i].classList);
+                }
 
-    isLegalMove(e) {
+
+    }
+
+    isLegalMove(e, testCheck) {
+        
         var startPosition;
 
         var new_horiz;
         var new_vert;
         var new_pos;
+        
+        
+      
 
         self = this // Bind this ChessBoard to variable self. Chessboard Methods usable with self variable, in case 'this' changes inside function
-
+       
         var piece_type = e.children[0].getAttribute("type");
-        if (e.children[0].getAttribute("side") != self.currentTurn)
+        if (e.children[0].getAttribute("side") != self.currentTurn && !testCheck)
         {
-            console.log('It is ' + self.currentTurn + 's turn');
+            self.terminalT.innerHTML = self.currentTurn.toUpperCase() + ' TURN';
             return 0;
         }
         var current = e.id.match(/[a-zA-Z]+|[0-9]+/g);
@@ -344,6 +403,29 @@ var Chessboard = class Chessboard {
         self.skiprightdown = false;
         self.skipleftdown = false;
         self.skipleftup = false;
+       
+        var isKingDanger = function (ce, cposition, type) { //Check legal positions and add css for marking
+            
+                        if (cposition != null && cposition.hasChildNodes()) { // Cases when there is already piece
+                            console.log(cposition.children[0].getAttribute("type")+type);
+                            if (cposition.children[0].getAttribute("side") != ce.children[0].getAttribute("side") && cposition.children[0].getAttribute("type") == type) {// If pieces are different color and movetable matches, it is check
+                                console.log('CHESS');
+                    
+                                self.terminalT.innerHTML = 'CHECK';
+                                 return true; // Returns true only, when there is piece 
+                             }
+                           
+                            // cposition.classList.add('legal');  //Show legal moves
+                            // cposition.ondragover = self.handleSquareDragOver; //Enable dropping
+                    
+                            // console.log(cposition.children[0].getAttribute("side"));
+                            // console.log(cposition.children[0].getAttribute("type"));
+                            return true;
+                          
+                            
+                        }
+                        return false;
+                    }
 
 
         var checkMove = function (ce, cposition) { //Check legal positions and add css for marking
@@ -351,6 +433,7 @@ var Chessboard = class Chessboard {
             if (cposition != null && !cposition.hasChildNodes()) { // Move is probably legal, if  there is no piece already
 
                 cposition.classList.add('legal');  //Show legal moves
+                cposition.onclick = self.testclick;
                 cposition.ondragover = self.handleSquareDragOver; //Enable dropping
                 return false;
             }
@@ -358,13 +441,15 @@ var Chessboard = class Chessboard {
                 // console.log(cposition.children[0].getAttribute("side"));
                 if (cposition.children[0].getAttribute("side") != ce.children[0].getAttribute("side")) {// If pieces are different color, move is probably legal{
                     cposition.classList.add('legal');
+                   
                     cposition.ondragover = self.handleSquareDragOver;
                 }
                 return true; // Returns true only, when there is piece 
             }
             return false;
         }
-        var changeCoord = function (horizontal, vertical, moveset, i, skip) { //Changes coordinate, checks state of new coordinate. Marks directions checked afterwards
+       
+        var changeCoord = function (horizontal, vertical, moveset, i, skip, type) { //Changes coordinate, checks state of new coordinate. Marks directions checked afterwards
 
 
             switch (moveset) {
@@ -427,8 +512,23 @@ var Chessboard = class Chessboard {
             if (position == null) { // Null means we are out of board
                 self[skip] = true; //Sets class parameter true by given variable name. Last legal move reached
             }
-            if (checkMove(e, position)) { // True means, we have reached a piece. Legal move colored and allowed
+            if (testCheck){
+
+                // console.log(type);
+
+
+               if ( isKingDanger(e, position, type)){
+                    self[skip] = true;
+                //    console.log("Check!");
+               }
+
+            }
+            
+            else if (checkMove(e, position)) { // True means, we have reached a piece. Legal move colored and allowed
                 self[skip] = true;
+            }
+            else {
+                console.log("At least one move for free square.");
             }
         }
 
@@ -443,21 +543,21 @@ var Chessboard = class Chessboard {
 
                 if (!self.skipup) { //Let's scheck next position upwards, if it is not allowed to skip yet. And so on.
 
-                    changeCoord(horizontal, vertical, 1, i, 'skipup');
+                    changeCoord(horizontal, vertical, 1, i, 'skipup', 'rook');
                 }
 
                 if (!self.skipdown) {
 
-                    changeCoord(horizontal, vertical, 2, i, 'skipdown');
+                    changeCoord(horizontal, vertical, 2, i, 'skipdown', 'rook');
                 }
 
                 if (!self.skipright) {
 
-                    changeCoord(horizontal, vertical, 3, i, 'skipright');
+                    changeCoord(horizontal, vertical, 3, i, 'skipright', 'rook');
                 }
                 if (!self.skipleft) {
 
-                    changeCoord(horizontal, vertical, 4, i, 'skipleft');
+                    changeCoord(horizontal, vertical, 4, i, 'skipleft', 'rook');
                 }
 
 
@@ -480,21 +580,21 @@ var Chessboard = class Chessboard {
 
                 if (!self.skiprightup) { //Let's scheck next position upwards, if it is not allowed to skip yet. And so on.
 
-                    changeCoord(horizontal, vertical, 5, i, 'skiprightup');
+                    changeCoord(horizontal, vertical, 5, i, 'skiprightup', 'bishop');
                 }
 
                 if (!self.skiprightdown) {
 
-                    changeCoord(horizontal, vertical, 6, i, 'skiprightdown');
+                    changeCoord(horizontal, vertical, 6, i, 'skiprightdown', 'bishop');
                 }
 
                 if (!self.skipleftdown) {
 
-                    changeCoord(horizontal, vertical, 7, i, 'skipleftdown');
+                    changeCoord(horizontal, vertical, 7, i, 'skipleftdown', 'bishop');
                 }
                 if (!self.skipleftup) {
 
-                    changeCoord(horizontal, vertical, 8, i, 'skipleftup');
+                    changeCoord(horizontal, vertical, 8, i, 'skipleftup', 'bishop');
                 }
                 if (self.skiprightup && self.skiprightdown && self.skipleftdown && self.skipleftup) { //Checks if every direction is handled
                     break;
@@ -505,7 +605,7 @@ var Chessboard = class Chessboard {
             } while (loop_enabler);
 
         }
-
+       
         var pawn_func = function (startNumber, moves, sideVar, moveNames) {
 
             if (current[1] == startNumber) {
@@ -541,6 +641,42 @@ var Chessboard = class Chessboard {
 
 
         }
+        var knight_func = function() {
+            var knight_moves = {
+                upleft: [-1, 2],
+                upright: [1, 2],
+                rightup: [2, 1],
+                rightdown: [2, -1],
+                downright: [1, -2],
+                downleft: [-1, -2],
+                leftdown: [-2, -1],
+                leftup: [-2, 1]
+            };
+            console.log(knight_moves);
+            for (const i in knight_moves) {
+                try {
+                    new_horiz = self.letters[self.letters.indexOf(horizontal) + knight_moves[i][0]]; //Viable horizontal position
+                } catch (e) {
+                    console.log(e + " " + "outofbound");
+
+                }
+                new_vert = parseInt(vertical) + knight_moves[i][1]; //Viable vertical position
+                new_pos = new_horiz + new_vert; //Create div name
+                var position = document.getElementById(new_pos); //Get element with that div. It is null if not existing
+                checkMove(e, position); //Check if position is legal and add css for marking
+            }
+
+        }
+        // Check for check-state
+        if (testCheck) {
+            console.log('checking for check');
+            // isKingDanger();
+            rook_func();
+            i = 1; //Reset i for easy re-use of older functions. Checking moves of rook and bishop
+            bishop_func();
+        }
+
+
 
         // Rules, white pawn
         if (piece_type == "wpawn") {
@@ -562,29 +698,7 @@ var Chessboard = class Chessboard {
         // Legal moves for Knight
         if (piece_type == "knight") { //Special case
 
-            var knight_moves = {
-                upleft: [-1, 2],
-                upright: [1, 2],
-                rightup: [2, 1],
-                rightdown: [2, -1],
-                downright: [1, -2],
-                downleft: [-1, -2],
-                leftdown: [-2, -1],
-                leftup: [-2, 1]
-            };
-
-            for (const i in knight_moves) {
-                try {
-                    new_horiz = this.letters[this.letters.indexOf(horizontal) + knight_moves[i][0]]; //Viable horizontal position
-                } catch (e) {
-                    console.log(e + " " + "outofbound");
-
-                }
-                new_vert = parseInt(vertical) + knight_moves[i][1]; //Viable vertical position
-                new_pos = new_horiz + new_vert; //Create div name
-                var position = document.getElementById(new_pos); //Get element with that div. It is null if not existing
-                checkMove(e, position); //Check if position is legal and add css for marking
-            }
+            knight_func();
 
         }
         //Legal moves for Rook
