@@ -6,7 +6,7 @@
           content="no">
     <title>MasterChesser</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.min.css') }}">
     <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.structure.css') }}"> -->
     <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.theme.css') }}"> -->
 
@@ -56,16 +56,16 @@
         </select> <br><br>
         <input type="button" class="okbutton" onclick="alert('Game Saved!')" value="OK">
     </div>
-    <a title="Settings of the game." onclick="ngameOpt('#settings')">Settings</a>
+    <a title="Settings of the game. Values can be set precisely with arrowkeys after clicking sliders." onclick="ngameOpt('#settings')">Settings</a>
     <div id="settings" class="settings newgame" name="difficulty">
         <div class="row_wrapper">
             <span style="float: left !important;">Difficulty: </span> <select title="Change difficulty of the game. Easy, medium or hard." id ="StyledSelect" style="display: inline-block !important;">
-            <option value
-            "difficulty1" selected>Easy </option>
-            <option value
-            "difficulty2">Medium </option>
-            <option value
-            "difficulty3">Hard </option>
+            <option value =
+            "easy" selected>Easy </option>
+            <option value =
+            "medium">Medium </option>
+            <option value =
+            "hard">Hard </option>
         </select><br>
 
         </div>
@@ -116,7 +116,7 @@
 <!-- </div> -->
 
 <h2>MasterChesser 2017</h2>
-<p>You are in game.</p>
+<div title="Hours:Minutes:Seconds" id = "timerWindow" class="unselectable"></div>
 <!-- <div id="svgContainer"></div> -->
 
 <div id="mainChessBoard">

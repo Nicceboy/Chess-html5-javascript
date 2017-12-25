@@ -507,6 +507,16 @@ img.resize {
     font-size:70px;
     background: WHITE;
 }
+#timerWindow {
+    position: fixed;
+    text-align: center;
+    margin-left: 15%;
+    font-size: 50px !important;
+    width: 180px;
+    border: solid 6px;
+    border-radius: 30% 30% 30% 30%;
+    background-color: white;
+}
 /* label {
     display: inline-block;
     width: 5em;

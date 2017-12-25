@@ -4,12 +4,17 @@ var Chessboard = class Chessboard {
         this.height = height;
         this.width = width;
         
+
+        // this.timerLenght = parseInt(document.getElementById("Timer").value) * 1000 * 60; //Timer lenght in milliseconds
         var self = this;
         self.terminalT = document.getElementById("TerminalText");
         self.currentTurn = 'white';
+        self.timerLenght = document.getElementById("Timer").value * 1000 * 60; //Timer lenght in milliseconds
+        self.timerIncrease = document.getElementById("TimerIncrease").value * 1000; //Timer lenght in milliseconds
+      
+        self.difficulty = document.getElementById("StyledSelect").options[document.getElementById("StyledSelect").selectedIndex].value;
         self.terminalT.innerHTML = self.currentTurn.toUpperCase() + ' is starting';
-        self.timerLenght = document.getElementById("Timer").value;
-        // self.terminalT.innerHTML = self.timerLenght;
+        // self.terminalT.innerHTML = self.timerIncrease;
         // var $tempobj = $("<div>").css('display', 'none').addClass("square");
         // $("body").append($tempobj);
         // console.log($tempobj.css("border-width"));
@@ -22,10 +27,46 @@ var Chessboard = class Chessboard {
 
 
         this.createBoard();
+        // this.startTimer.bind(this);
+        console.log(self.timerLenght);
+        this.startTimer();
         // console.log(self);
 
     }
+    saveSettings() {
+    self.timerLenght = document.getElementById("Timer").value;
+    self.timerIncrease = document.getElementById("TimerIncrease").value;
+    self.difficulty = document.getElementById("StyledSelect").options[document.getElementById("StyledSelect").selectedIndex].value;
 
+    }
+    startTimer(){
+        self = this;
+        
+        console.log(self.timerLenght);
+        // self.terminalT.innerHTML = "hahahahah";
+       
+        var timer = setInterval(function() {
+            self.timerLenght = self.timerLenght - 1000;
+        //   self.terminalT.innerHTML = this.timerIncrease;
+          // Find the distance between now an the count down date
+        
+          // Time calculations for days, hours, minutes and seconds
+          var days = Math.floor(self.timerLenght/ (1000 * 60 * 60 * 24));
+          var hours = Math.floor((self.timerLenght % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((self.timerLenght % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((self.timerLenght % (1000 * 60)) / 1000);
+        
+          // Display the result in the element with id="demo"
+          document.getElementById("timerWindow").innerHTML =  hours + ":" + minutes + ":" + seconds;
+        
+          // If the count down is finished, write some text
+          if (self.timerLenght < 0) {
+            clearInterval(timer);
+            self.terminalT.innerHTML = "Your time has ended. Game lost.";
+            self.currentTurn = 'none';
+          }
+        }, 1000);
+    }
     createBoard() {
 
         for (var i = 0; i < 64; i++) {

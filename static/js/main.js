@@ -133,13 +133,26 @@ $("#TimerLength").click(function () { //Toggling for Timer slider
 $("#IncreaseAmount").click(function () { //Toggling for Timer increse slider
     document.getElementById('IncreaseSlider').classList.toggle("show");
 })
-$( function() { //Special tooltiptext show-up. Themed and custom position
-    $( document ).tooltip({
+$( function() { //Special tooltiptext show-up. Themed and custom position. Using jquery-ui
+    $( "#mySidenav, #timerWindow" ).tooltip({
+        position: {
+          my: "left right", // Tooltip appearing to right side, center vertically
+          at: "right+10 center",
+        },
+        classes: {
+            "ui-tooltip": "highlight" //Removes border shadow etc.
+          }
+      })
+      $( "#settings" ).tooltip({
         position: {
           my: "left right",
-          at: "right+10 center",
-        }
-      });
+          at: "right+40 center",
+        },
+        classes: {
+            "ui-tooltip": "highlight"
+          }
+      })
+     
   } );
 
   $( function() { //Change look of default selectmenus with JQuery
