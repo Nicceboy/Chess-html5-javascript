@@ -5,7 +5,10 @@
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1 " http-equiv="imagetoolbar"
           content="no">
     <title>MasterChesser</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.structure.css') }}"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.theme.css') }}"> -->
 
 </head>
 <body>
@@ -27,7 +30,7 @@
     <a title="Saves current game for selected slot."onclick="ngameOpt('#savegame')">Save Game</a>
     <!-- <input type="button" class="menubtn" onclick="ngameOpt('#savegame')" value="Save Game"> -->
     <div id="savegame" class="savegame newgame">
-        <select size="3">
+        <select id="savegameselect" size="3">
             <option value
             "savegame1" >Savegame 1 </option>
             <option value
@@ -41,7 +44,7 @@
     </div>
     <a title="Select previously saved game to be loaded."onclick="ngameOpt('#loadgame')">Load Game</a>
     <div id="loadgame" class="savegame newgame">
-        <select size="3">
+        <select id="loadgameselect" size="3">
             <option value
             "loadgame1" selected>Loadgame 1 </option>
             <option value
@@ -53,10 +56,10 @@
         </select> <br><br>
         <input type="button" class="okbutton" onclick="alert('Game Saved!')" value="OK">
     </div>
-    <a title="Change settings of game."onclick="ngameOpt('#settings')">Settings</a>
+    <a title="Settings of the game." onclick="ngameOpt('#settings')">Settings</a>
     <div id="settings" class="settings newgame" name="difficulty">
         <div class="row_wrapper">
-            <span style="float: left !important;">Difficulty: </span> <select title="Change difficulty of the game." id ="StyledSelect" style="display: inline-block !important;">
+            <span style="float: left !important;">Difficulty: </span> <select title="Change difficulty of the game. Easy, medium or hard." id ="StyledSelect" style="display: inline-block !important;">
             <option value
             "difficulty1" selected>Easy </option>
             <option value
@@ -70,7 +73,7 @@
 
             <span style="float: left !important;"> Volume: </span>
 
-            <span title="Adjust volume of music." id="VolumeValue"></span>
+            <span title="Adjust volume of music. Range 1-100%" id="VolumeValue"></span>
 
 
 
@@ -86,12 +89,12 @@
         </div>
 
    <div class = "row_wrapper">
-      <span  style="float: left !important;">Timer length: </span> <span title="Adjust lenght of game clock for all players." id="TimerLength" ></span>
+      <span  style="float: left !important;">Timer: </span> <span title="Adjust lenght of game clock for all players. 5-120min" id="TimerLength" ></span>
         <div id="TimerSlider" class="SliderPopUp">
             <input type="range" min="5" max="120" value="10" class="slider" id="Timer"></div>
           </div>
     <div class = "row_wrapper">
-        <span style="float: left !important;">Inc. per turn: </span><span title="Adjust time to be gained after ending turn."id="IncreaseAmount"></span>
+        <span style="float: left !important;">Inc. per turn: </span><span title="Adjust time to be gained after ending turn. Range 5-60s"id="IncreaseAmount"></span>
         <div id="IncreaseSlider" class="SliderPopUp">
             <input type="range" min="5" max="60" value="10" class="slider" id="TimerIncrease">
           </div>
@@ -108,7 +111,7 @@
 <!-- <div id="soundcontainer"> -->
 <audio id="background_audio" autoplay="autoplay">
     <!-- <embed src="planets.mp3"  autostart="true" loop="true" hidden="true"> -->
-    <source src="sound/planets.mp3" type="audio/mpeg"/>
+    <source src="{{ url_for('static', filename='sound/planets.mp3') }}" type="audio/mpeg"/>
 </audio>
 <!-- </div> -->
 
@@ -126,9 +129,9 @@
 
 <!-- SCRIPT SECTION -->
 
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-<script type="text/javascript" src="js/chessboard.js"></script>
-<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/chessboard.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

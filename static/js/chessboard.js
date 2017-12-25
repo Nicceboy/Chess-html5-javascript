@@ -70,18 +70,18 @@ var Chessboard = class Chessboard {
 
         //Images of pieces
 
-        var wpawn = "chesspieces/Chess_plt45.svg";
-        var bpawn = "chesspieces/Chess_pdt45.svg";
-        var wrook = "chesspieces/Chess_rlt45.svg";
-        var brook = "chesspieces/Chess_rdt45.svg";
-        var wknight = "chesspieces/Chess_nlt45.svg";
-        var bknight = "chesspieces/Chess_ndt45.svg";
-        var wbishop = "chesspieces/Chess_blt45.svg";
-        var bbishop = "chesspieces/Chess_bdt45.svg";
-        var wqueen = "chesspieces/Chess_qlt45.svg";
-        var bqueen = "chesspieces/Chess_qdt45.svg";
-        var wking = "chesspieces/Chess_klt45.svg";
-        var bking = "chesspieces/Chess_kdt45.svg";
+        var wpawn = "static/chesspieces/Chess_plt45.svg";
+        var bpawn = "static/chesspieces/Chess_pdt45.svg";
+        var wrook = "static/chesspieces/Chess_rlt45.svg";
+        var brook = "static/chesspieces/Chess_rdt45.svg";
+        var wknight = "static/chesspieces/Chess_nlt45.svg";
+        var bknight = "static/chesspieces/Chess_ndt45.svg";
+        var wbishop = "static/chesspieces/Chess_blt45.svg";
+        var bbishop = "static/chesspieces/Chess_bdt45.svg";
+        var wqueen = "static/chesspieces/Chess_qlt45.svg";
+        var bqueen = "static/chesspieces/Chess_qdt45.svg";
+        var wking = "static/chesspieces/Chess_klt45.svg";
+        var bking = "static/chesspieces/Chess_kdt45.svg";
 
         //New game positions
 

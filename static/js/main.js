@@ -133,3 +133,20 @@ $("#TimerLength").click(function () { //Toggling for Timer slider
 $("#IncreaseAmount").click(function () { //Toggling for Timer increse slider
     document.getElementById('IncreaseSlider').classList.toggle("show");
 })
+$( function() { //Special tooltiptext show-up. Themed and custom position
+    $( document ).tooltip({
+        position: {
+          my: "left right",
+          at: "right+10 center",
+        }
+      });
+  } );
+
+  $( function() { //Change look of default selectmenus with JQuery
+    $( "#savegameselect" ).selectmenu()
+    .addClass( "overflow" );
+ 
+    $( "#loadgameselect" ).selectmenu()
+    .addClass( "overflow" );
+ 
+  } );
