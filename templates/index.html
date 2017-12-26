@@ -2,8 +2,8 @@
 <html>
 
 <head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1 " http-equiv="imagetoolbar"
-          content="no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MasterChesser</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.min.css') }}">
@@ -94,13 +94,13 @@
             <input type="range" min="5" max="120" value="10" class="slider" id="Timer"></div>
           </div>
     <div class = "row_wrapper">
-        <span style="float: left !important;">Inc. per turn: </span><span title="Adjust time to be gained after ending turn. Range 5-60s"id="IncreaseAmount"></span>
+        <span style="float: left !important;">Inc. per turn: </span><span title="Adjust time to be gained after ending turn. Range 0-60s"id="IncreaseAmount"></span>
         <div id="IncreaseSlider" class="SliderPopUp">
-            <input type="range" min="5" max="60" value="10" class="slider" id="TimerIncrease">
+            <input type="range" min="0" max="60" value="10" class="slider" id="TimerIncrease">
           </div>
     </div><br>
     
-    <input type="button" class="okbutton" onclick="alert('Saved')" value="Save!">
+    <input type="button" class="okbutton" onclick="save()" value="Save!">
 
     </div>
     <a title="Guided gameplay through special cases.">Training</a>
@@ -109,14 +109,15 @@
 </div>
 
 <!-- <div id="soundcontainer"> -->
-<audio id="background_audio" autoplay="autoplay">
+<!-- <audio id="background_audio" autoplay="autoplay"> -->
     <!-- <embed src="planets.mp3"  autostart="true" loop="true" hidden="true"> -->
-    <source src="{{ url_for('static', filename='sound/planets.mp3') }}" type="audio/mpeg"/>
-</audio>
+    <!-- <source src="{{ url_for('static', filename='sound/planets.mp3') }}" type="audio/mpeg"/>
+</audio> -->
 <!-- </div> -->
 
 <h2>MasterChesser 2017</h2>
 <div title="Hours:Minutes:Seconds" id = "timerWindow" class="unselectable"></div>
+<div title="Pause or continue game." onclick = "pauseGame()" id = "pauseButton" class= "unselectable">Pause</div>
 <!-- <div id="svgContainer"></div> -->
 
 <div id="mainChessBoard">

@@ -443,7 +443,9 @@ img.resize {
     user-select: none;
 
 }
-
+.blur {
+    filter: blur(20px) !important;
+}
 .square
 {
     float: left;
@@ -510,12 +512,32 @@ img.resize {
 #timerWindow {
     position: fixed;
     text-align: center;
-    margin-left: 15%;
+  
+    margin-left: 17.5%;   /* Half of chessboard */
     font-size: 50px !important;
     width: 180px;
-    border: solid 6px;
+    border: solid 6px white;
     border-radius: 30% 30% 30% 30%;
     background-color: white;
+}
+.blackTimer {
+    border: solid 6px black !important;
+    color: white !important;
+    background-color: black !important
+}
+#pauseButton {
+    position: fixed;
+    text-align: center;
+    margin-left: 17.5%;   /* Half of chessboard */
+    margin-top: 5%;
+    width: 180px;
+    font-size: 30px;
+    border: solid 3px black;
+    border-radius: 10% 10% 10% 10%;
+    background-color: white;
+
+
+    cursor: pointer;
 }
 /* label {
     display: inline-block;

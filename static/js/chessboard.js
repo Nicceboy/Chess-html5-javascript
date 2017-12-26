@@ -9,7 +9,10 @@ var Chessboard = class Chessboard {
         var self = this;
         self.terminalT = document.getElementById("TerminalText");
         self.currentTurn = 'white';
+        self.gamestate = 'play';
         self.timerLenght = document.getElementById("Timer").value * 1000 * 60; //Timer lenght in milliseconds
+        self.whiteTimer = self.timerLenght;
+        self.blackTimer = self.timerLenght;
         self.timerIncrease = document.getElementById("TimerIncrease").value * 1000; //Timer lenght in milliseconds
       
         self.difficulty = document.getElementById("StyledSelect").options[document.getElementById("StyledSelect").selectedIndex].value;
@@ -26,46 +29,85 @@ var Chessboard = class Chessboard {
         boarddiv.style.width = this.width + 'px';
 
 
-        this.createBoard();
-        // this.startTimer.bind(this);
+        this.createBoard(); // Creates gameboard
+
         console.log(self.timerLenght);
-        this.startTimer();
-        // console.log(self);
+        this.startTimer(); // Starts timers
+
 
     }
-    saveSettings() {
-    self.timerLenght = document.getElementById("Timer").value;
-    self.timerIncrease = document.getElementById("TimerIncrease").value;
+    saveSettings() { // Once settings are saved, new values stored also to object.
+    self.timerLenght = document.getElementById("Timer").value  * 1000 * 60;
+    self.timerIncrease = document.getElementById("TimerIncrease").value * 1000;
     self.difficulty = document.getElementById("StyledSelect").options[document.getElementById("StyledSelect").selectedIndex].value;
+    console.log("Settings saved. " + self.timerLenght + " " + self.timerIncrease + " " + self.difficulty);
 
     }
     startTimer(){
         self = this;
         
-        console.log(self.timerLenght);
         // self.terminalT.innerHTML = "hahahahah";
        
-        var timer = setInterval(function() {
-            self.timerLenght = self.timerLenght - 1000;
-        //   self.terminalT.innerHTML = this.timerIncrease;
-          // Find the distance between now an the count down date
+        self.ongoing = setInterval(function() {
+        var timer;
+
+          if (self.currentTurn == 'white'){ //Declare timer used based on current turn
+            timer = 'whiteTimer';
+          }
+          if (self.currentTurn == 'black'){
+            timer = 'blackTimer';
+          }
+          //Use names to point correct variables, code reuseability
+
+
+          // Time calculations f, minutes and seconds
+          var hours = Math.floor((self[timer] % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((self[timer] % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((self[timer] % (1000 * 60)) / 1000);
         
-          // Time calculations for days, hours, minutes and seconds
-          var days = Math.floor(self.timerLenght/ (1000 * 60 * 60 * 24));
-          var hours = Math.floor((self.timerLenght % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          var minutes = Math.floor((self.timerLenght % (1000 * 60 * 60)) / (1000 * 60));
-          var seconds = Math.floor((self.timerLenght % (1000 * 60)) / 1000);
-        
-          // Display the result in the element with id="demo"
+          //Add extra zero for short numbers
+            if (seconds.toString().length == 1){
+                seconds = "0" + seconds;
+            }
+            if (minutes.toString().length == 1){
+                minutes = "0" + minutes;
+            }
+           
+          // Display the result in the information terminal
           document.getElementById("timerWindow").innerHTML =  hours + ":" + minutes + ":" + seconds;
-        
-          // If the count down is finished, write some text
-          if (self.timerLenght < 0) {
-            clearInterval(timer);
+            
+          // If the count down is finished, game has ended
+          if (self[timer] < 0) {
+            clearInterval(self.ongoing);
             self.terminalT.innerHTML = "Your time has ended. Game lost.";
             self.currentTurn = 'none';
           }
+          if (self.gamestate == 'play'){ //Timer on, if game not paused
+            self[timer] = self[timer] - 1000; //Reduce time from correct timer
+          }
+
+          
         }, 1000);
+    }
+    pauseTimer(){ // Method for pausing/unpausing timer 
+        if (self.gamestate == 'play')
+        self.gamestate = 'paused';
+        else {
+            self.gamestate = 'play';
+        }
+    }
+    newGame() {
+        //Let's remove all the pieces from the Chessboard. We have own function for it
+        document.getElementsByClassName("piece").remove();
+
+        // addPieces();
+        this.createBoard();
+        self.currentTurn = 'white';
+        clearInterval(self.ongoing); //Stop previous timer
+        self.whiteTimer = self.timerLenght;
+        self.blackTimer = self.timerLenght;
+        self.terminalT.innerHTML = self.currentTurn.toUpperCase() + ' is starting';
+        this.startTimer(); // Starts timers
     }
     createBoard() {
 
@@ -260,15 +302,6 @@ var Chessboard = class Chessboard {
         //
     }
 
-    newGame() {
-        //Let's remove all the pieces from the Chessboard. We have own function for it
-        document.getElementsByClassName("piece").remove();
-
-        // addPieces();
-        this.createBoard();
-        self.currentTurn = 'white';
-        self.terminalT.innerHTML = self.currentTurn.toUpperCase() + ' is starting';
-    }
 
 
     handleSquareDragOverDefault() { //Just for coloring targeted square
@@ -364,11 +397,14 @@ var Chessboard = class Chessboard {
       
     //    setTimeout(self.afterTwoSeconds, 2000);
        if (document.getElementById(data).getAttribute("side") == 'white'){ //Changes turn
+        self.whiteTimer = self.whiteTimer + self.timerIncrease; //Add more time to the timer at the end of the turn
         self.currentTurn = 'black';
-    
+        $('#timerWindow').addClass('blackTimer');
     }
     else {
+        self.blackTimer = self.blackTimer + self.timerIncrease;
         self.currentTurn = 'white';
+        $('#timerWindow').removeClass('blackTimer');
     }
     self.terminalT.innerHTML = self.currentTurn.toUpperCase()+ ' TURN';
     self.isCheck();
@@ -414,7 +450,11 @@ var Chessboard = class Chessboard {
         self = this // Bind this ChessBoard to variable self. Chessboard Methods usable with self variable, in case 'this' changes inside function
        
         var piece_type = e.children[0].getAttribute("type");
-        if (e.children[0].getAttribute("side") != self.currentTurn && !testCheck)
+        if (self.gamestate != 'play'){
+            self.terminalT.innerHTML = 'Game paused or ended. Unable to move pieces.';
+            return 0;
+        }
+        if (e.children[0].getAttribute("side") != self.currentTurn && !testCheck)//Controls correct turn
         {
             self.terminalT.innerHTML = self.currentTurn.toUpperCase() + ' TURN';
             return 0;

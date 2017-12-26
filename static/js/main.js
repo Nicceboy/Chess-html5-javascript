@@ -111,8 +111,30 @@ function stopDefault(e) {
     e.preventDefault(); //JQuery prevent default
 
 }
+function save(){
 
-
+    // console.log('saved');
+    chesstable.saveSettings()
+}
+function pauseGame (){
+    
+    if (!$(this).data('clicked')){
+        $("#pauseButton").html('Continue');
+    $("#mainChessBoard").addClass('blur');
+        chesstable.pauseTimer();
+    $(this).click(function () {
+        $(this).data('clicked', true);
+    });
+}
+else {
+    $("#pauseButton").html('Pause');
+    $("#mainChessBoard").removeClass('blur');
+    chesstable.pauseTimer();
+    $(this).click(function () {
+        $(this).data('clicked', false);
+});
+}
+}
 
 
 
@@ -134,7 +156,7 @@ $("#IncreaseAmount").click(function () { //Toggling for Timer increse slider
     document.getElementById('IncreaseSlider').classList.toggle("show");
 })
 $( function() { //Special tooltiptext show-up. Themed and custom position. Using jquery-ui
-    $( "#mySidenav, #timerWindow" ).tooltip({
+    $( "#mySidenav, #timerWindow, #pauseButton" ).tooltip({
         position: {
           my: "left right", // Tooltip appearing to right side, center vertically
           at: "right+10 center",
