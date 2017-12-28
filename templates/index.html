@@ -7,6 +7,8 @@
     <title>MasterChesser</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.min.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet">
     <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.structure.css') }}"> -->
     <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.theme.css') }}"> -->
 
@@ -105,18 +107,19 @@
     </div>
     <a title="Guided gameplay through special cases.">Training</a>
 
-    <a onclick="muteAudio()">Testing mute button</a>
 </div>
 
 <!-- <div id="soundcontainer"> -->
-<!-- <audio id="background_audio" autoplay="autoplay"> -->
+<audio id="background_audio" autoplay="autoplay">
     <!-- <embed src="planets.mp3"  autostart="true" loop="true" hidden="true"> -->
-    <!-- <source src="{{ url_for('static', filename='sound/planets.mp3') }}" type="audio/mpeg"/>
-</audio> -->
+    <source src="{{ url_for('static', filename='sound/planets.mp3') }}" type="audio/mpeg"/>
+</audio>
 <!-- </div> -->
 
-<h2>MasterChesser 2017</h2>
+<h2>MasterChesser 2017 </h2> <!-- Using Google Material Design font for Sound icon -->
+<div class="wrapper"><div onclick="muteAudio()" title="Mute/unmute music." id="sound_icon" class="material-icons unselectable">&#xE050;</div>
 <div title="Hours:Minutes:Seconds" id = "timerWindow" class="unselectable"></div>
+</div>
 <div title="Pause or continue game." onclick = "pauseGame()" id = "pauseButton" class= "unselectable">Pause</div>
 <!-- <div id="svgContainer"></div> -->
 
@@ -127,9 +130,10 @@
   <use xlink:href="../chesspieces/Chess_bdt45.svg#testsvg"></use>
 </svg> -->
 
-
 <!-- SCRIPT SECTION -->
-
+<script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}; // Global variable for path to the location in server
+  </script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/chessboard.js') }}"></script>

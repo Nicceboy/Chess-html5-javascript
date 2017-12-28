@@ -86,9 +86,12 @@ function closeNav() {
 function muteAudio() {
     if (document.getElementById("background_audio").muted == true) {
         document.getElementById("background_audio").muted = false;
+        $('#sound_icon').html('&#xE050;')
     }
     else {
         document.getElementById("background_audio").muted = true;
+        $('#sound_icon').html('&#xE04F;')
+
     }
 
 }
@@ -117,22 +120,17 @@ function save(){
     chesstable.saveSettings()
 }
 function pauseGame (){
-    
-    if (!$(this).data('clicked')){
+    if (!$("#mainChessBoard").hasClass('blur')){
         $("#pauseButton").html('Continue');
     $("#mainChessBoard").addClass('blur');
         chesstable.pauseTimer();
-    $(this).click(function () {
-        $(this).data('clicked', true);
-    });
+
 }
 else {
     $("#pauseButton").html('Pause');
     $("#mainChessBoard").removeClass('blur');
     chesstable.pauseTimer();
-    $(this).click(function () {
-        $(this).data('clicked', false);
-});
+
 }
 }
 
@@ -142,7 +140,7 @@ else {
 
 var chesstable = new Chessboard(800, 800);
 
-
+chesstable.generateJSON();
 
 addSlider(); //Functionality of sliders
 
@@ -156,7 +154,7 @@ $("#IncreaseAmount").click(function () { //Toggling for Timer increse slider
     document.getElementById('IncreaseSlider').classList.toggle("show");
 })
 $( function() { //Special tooltiptext show-up. Themed and custom position. Using jquery-ui
-    $( "#mySidenav, #timerWindow, #pauseButton" ).tooltip({
+    $( "#mySidenav, #timerWindow, #pauseButton, #sound_icon" ).tooltip({
         position: {
           my: "left right", // Tooltip appearing to right side, center vertically
           at: "right+10 center",
@@ -185,3 +183,5 @@ $( function() { //Special tooltiptext show-up. Themed and custom position. Using
     .addClass( "overflow" );
  
   } );
+
+  chesstable.computerMove();

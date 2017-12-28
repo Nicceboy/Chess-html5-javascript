@@ -3,7 +3,22 @@ var Chessboard = class Chessboard {
         this.letters = "abcdefgh";
         this.height = height;
         this.width = width;
-        
+
+   
+        this.newGame_positions ={
+            "white":{
+                "pawn":["a2","b2","c2","d2","e2","f2","g2","h2"],
+                "rook":["a1","h1"],"knight":["b1","g1"],
+                "bishop":["c1","f1"],
+                "queen":["d1"],
+                "king":["e1"]
+            },"black":{
+                "rook":["a8","h8"],
+                "knight":["b8","g8"],
+                "bishop":["c8","f8"],
+                "queen":["d8"],
+                "king":["e8"],
+                "pawn":["a7","b7","c7","d7","e7","f7","g7","h7"]}};
 
         // this.timerLenght = parseInt(document.getElementById("Timer").value) * 1000 * 60; //Timer lenght in milliseconds
         var self = this;
@@ -77,7 +92,7 @@ var Chessboard = class Chessboard {
           document.getElementById("timerWindow").innerHTML =  hours + ":" + minutes + ":" + seconds;
             
           // If the count down is finished, game has ended
-          if (self[timer] < 0) {
+          if (self[timer] <= 0) {
             clearInterval(self.ongoing);
             self.terminalT.innerHTML = "Your time has ended. Game lost.";
             self.currentTurn = 'none';
@@ -104,6 +119,7 @@ var Chessboard = class Chessboard {
         this.createBoard();
         self.currentTurn = 'white';
         clearInterval(self.ongoing); //Stop previous timer
+        $('#timerWindow').removeClass('blackTimer'); // Correct color for timer
         self.whiteTimer = self.timerLenght;
         self.blackTimer = self.timerLenght;
         self.terminalT.innerHTML = self.currentTurn.toUpperCase() + ' is starting';
@@ -143,12 +159,12 @@ var Chessboard = class Chessboard {
             // square.appendChild(number);
             //            #ababab
         }
-        this.addPieces();
+        this.addPieces(this.newGame_positions); // Fresh new game
         document.getElementById("mainChessBoard").style.display = 'block';
 
     }
 
-    addPieces() {
+    addPieces(positions) {
 
 
         //Images of pieces
@@ -166,20 +182,20 @@ var Chessboard = class Chessboard {
         var wking = "static/chesspieces/Chess_klt45.svg";
         var bking = "static/chesspieces/Chess_kdt45.svg";
 
-        //New game positions
+        //New/load game positions
 
-        var white_pawns = ["a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2"];
-        var black_pawns = ["a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7"];
-        var white_rooks = ["a1", "h1"];
-        var black_rooks = ["a8", "h8"];
-        var white_knights = ["b1", "g1"];
-        var black_knights = ["b8", "g8"];
-        var white_bishops = ["c1", "f1"];
-        var black_bishops = ["c8", "f8"];
-        var white_queen = ["d1"];
-        var black_queen = ["d8"];
-        var white_king = ["e1"];
-        var black_king = ["e8"];
+        var white_pawns = positions.white.pawn;
+        var black_pawns = positions.black.pawn;
+        var white_rooks = positions.white.rook;
+        var black_rooks = positions.black.rook;
+        var white_knights = positions.white.knight;
+        var black_knights = positions.black.knight;
+        var white_bishops = positions.white.bishop;
+        var black_bishops = positions.black.bishop;
+        var white_queen = positions.white.queen;
+        var black_queen = positions.black.queen;
+        var white_king = positions.white.king;
+        var black_king = positions.black.king;
 
         var wpawn_counter = 0;
         var bpawn_counter = 0;
@@ -197,22 +213,22 @@ var Chessboard = class Chessboard {
 
 
                 // var id = '#';
-                // document.write("hahahahah");
-                var id = this.letters[i] + (x + 1);
+               
+                var id = this.letters[i] + (x + 1); //Generate correct id by position for each square
                 // document.write(id);
                 var elem = document.createElement("img");
 
                 if (white_pawns.indexOf(id) > -1) {
                     elem.setAttribute("src", wpawn);
                     elem.setAttribute("side", "white");
-                    elem.setAttribute("type", "wpawn");
+                    elem.setAttribute("type", "pawn");
                     wpawn_counter++;
                     elem.id = "wpawn" + wpawn_counter;
                 }
                 else if (black_pawns.indexOf(id) > -1) {
                     elem.setAttribute("src", bpawn);
                     elem.setAttribute("side", "black");
-                    elem.setAttribute("type", "bpawn");
+                    elem.setAttribute("type", "pawn");
                     bpawn_counter++;
                     elem.id = "bpawn" + bpawn_counter;
                 }
@@ -450,6 +466,7 @@ var Chessboard = class Chessboard {
         self = this // Bind this ChessBoard to variable self. Chessboard Methods usable with self variable, in case 'this' changes inside function
        
         var piece_type = e.children[0].getAttribute("type");
+        var side = e.children[0].getAttribute("side");
         if (self.gamestate != 'play'){
             self.terminalT.innerHTML = 'Game paused or ended. Unable to move pieces.';
             return 0;
@@ -760,14 +777,14 @@ var Chessboard = class Chessboard {
 
 
         // Rules, white pawn
-        if (piece_type == "wpawn") {
+        if (piece_type == "pawn" && side == 'white') {
             var moveMethods = [1, 5, 8];
             var moveNames = ['skipup', 'skiprightup', 'skipleftup']
 
             pawn_func(2, moveMethods, 1, moveNames);
         }
         //Rules, black pawn
-        if (piece_type == "bpawn") {
+        if (piece_type == "pawn" && side == 'black') {
 
             var moveMethods = [2, 7, 6];
             var moveNames = ['skipdown', 'skipleftdown', 'skiprightdown']
@@ -805,4 +822,84 @@ var Chessboard = class Chessboard {
     
 
     }
+    generateJSON (){ //Generates JSON file from current positions of the board
+
+         //JSON is dynamic, contains only those what are left on chessboard
+        //Less data to transfer and to storage
+        var positions = {
+            white: {
+            },
+            black: {
+            }
+        }
+        var squares = document.getElementsByClassName("square");  
+
+        for (var i = 0; i < squares.length; i++) { //Reset allowed actions
+
+            if (squares[i].hasChildNodes()){
+            var type =   squares[i].children[0].getAttribute("type"); 
+            
+            if (squares[i].children[0].getAttribute("side") == 'white'){
+                if (!([type] in positions.white)){
+                    //Create key to the object, if it is not yet there
+                    positions.white[type] = [squares[i].id];
+                }
+                else {
+                     //Append location to list, since piece was already in object
+                    positions.white[type].push(squares[i].id);
+                }
+            }
+            else if (squares[i].children[0].getAttribute("side") == 'black'){
+                if (!([type] in positions.black)){
+                      //Create key to the object, if it is not yet there
+                    positions.black[type] = [squares[i].id];
+                }
+                else {
+                   //Append location to list, since piece was already in object
+                    positions.black[type].push(squares[i].id);
+                }
+            }
+            else {
+                console.log('Should not happen.');
+            }
+
+            }
+           
+
+        }
+        // console.log(positions);
+
+
+    // console.log(positions.black.pawn);
+
+    var boardJSON = JSON.stringify(positions);
+    localStorage.setItem("testJSON", boardJSON);
+    // window.location = boardJSON;
+    // console.log(boardJSON);
+    return boardJSON;
+
+    }
+
+    computerMove(){
+        var player_data = this.generateJSON();
+        // var computer_data = this.sendMoveJSON(player_data);
+
+        $.ajax({
+            url: $SCRIPT_ROOT + '/_make_move',
+            type: 'POST',
+            data: player_data,
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            async: true,
+            success: function (rdata){
+                console.log(rdata);
+                
+            }
+            
+
+
+        });
+
+    }
+
 }

@@ -75,13 +75,14 @@ img.resize {
     background-repeat: repeat;
     /*filter: grayscale(1);*/
     filter: invert(1) brightness(5) invert(1) drop-shadow(0 0 5px black) ;
+    /* filter: blur(1px); */
     /*filter: grayscale(1);*/
 }
 #mySidenav.sidenav {
     height: 100%;
     width: 250px;
     position: fixed;
-    z-index: 1;
+    z-index: 5;
     top: 0;
     left: 0;
 
@@ -289,6 +290,7 @@ img.resize {
 .row_wrapper {
     margin: 2px 0px 2px 0px; /*Extra space between rows*/
 }
+
 .okbutton{
     position: relative;
     background-color: #4CAF50;
@@ -499,7 +501,7 @@ img.resize {
 #bigterminal {
     display: block;
     width: 828px;
-    margin: 6px 0% 6px 35%;
+    margin: 4vmax 0% 6px 35%;
     /* width: 300px; */
     /* width : 20%; */
     border: 6px solid black;
@@ -509,16 +511,28 @@ img.resize {
     font-size:70px;
     background: WHITE;
 }
+.wrapper {
+    /* position: fixed; */
+    /* width: 500px; */
+    position: fixed;
+    height: 100px;
+    margin: 0 17.5%;
+    /* overflow: auto; */
+    /* display: block; */
+   ; /* text-align: center; */
+    /* margin-left: 17.5%;   Half of chessboard */
+}
 #timerWindow {
     position: fixed;
     text-align: center;
-  
-    margin-left: 17.5%;   /* Half of chessboard */
-    font-size: 50px !important;
-    width: 180px;
+    /* margin-left: 17.5%; */
+    display: inline-block;    
+    font-size: 4vmax !important;
+    width: 13vmax;
     border: solid 6px white;
     border-radius: 30% 30% 30% 30%;
     background-color: white;
+    z-index: 4;
 }
 .blackTimer {
     border: solid 6px black !important;
@@ -528,15 +542,27 @@ img.resize {
 #pauseButton {
     position: fixed;
     text-align: center;
+    display: block;
     margin-left: 17.5%;   /* Half of chessboard */
-    margin-top: 5%;
-    width: 180px;
-    font-size: 30px;
+    margin-top: 8vmax;
+    width: 13vmax;
+    font-size: 3vmax;
     border: solid 3px black;
     border-radius: 10% 10% 10% 10%;
     background-color: white;
+    z-index: 4;
 
 
+    cursor: pointer;
+}
+#sound_icon {
+   
+    position: fixed;
+    padding-top: 1%;
+    margin-left: -5%;
+    display: inline-block;
+    text-align: center;
+    font-size: 3vmax !important;
     cursor: pointer;
 }
 /* label {
