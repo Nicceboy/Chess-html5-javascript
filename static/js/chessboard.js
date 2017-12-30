@@ -3,33 +3,37 @@ var Chessboard = class Chessboard {
         this.letters = "abcdefgh";
         this.height = height;
         this.width = width;
+        this.playingVS = 'computer';
 
-   
-        this.newGame_positions ={
-            "white":{
-                "pawn":["a2","b2","c2","d2","e2","f2","g2","h2"],
-                "rook":["a1","h1"],"knight":["b1","g1"],
-                "bishop":["c1","f1"],
-                "queen":["d1"],
-                "king":["e1"]
-            },"black":{
-                "rook":["a8","h8"],
-                "knight":["b8","g8"],
-                "bishop":["c8","f8"],
-                "queen":["d8"],
-                "king":["e8"],
-                "pawn":["a7","b7","c7","d7","e7","f7","g7","h7"]}};
 
-        // this.timerLenght = parseInt(document.getElementById("Timer").value) * 1000 * 60; //Timer lenght in milliseconds
+        this.newGame_positions = { //Object containing information for new game
+            "turn" :"white",
+            "white": {
+                "pawn": ["a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2"],
+                "rook": ["a1", "h1"], "knight": ["b1", "g1"],
+                "bishop": ["c1", "f1"],
+                "queen": ["d1"],
+                "king": ["e1"]
+            }, "black": {
+                "rook": ["a8", "h8"],
+                "knight": ["b8", "g8"],
+                "bishop": ["c8", "f8"],
+                "queen": ["d8"],
+                "king": ["e8"],
+                "pawn": ["a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7"]
+            }
+        };
+
         var self = this;
-        self.terminalT = document.getElementById("TerminalText");
-        self.currentTurn = 'white';
-        self.gamestate = 'play';
+        self.clicked_piece; // Last clicked piece, used when moving by clics
+        self.terminalT = document.getElementById("TerminalText"); //Terminal window element
+        self.currentTurn = 'white'; //Starting turn and current turn
+        self.gamestate = 'play'; //Gamestate, used with timer
         self.timerLenght = document.getElementById("Timer").value * 1000 * 60; //Timer lenght in milliseconds
-        self.whiteTimer = self.timerLenght;
+        self.whiteTimer = self.timerLenght; //At start, white and black player have same timers
         self.blackTimer = self.timerLenght;
         self.timerIncrease = document.getElementById("TimerIncrease").value * 1000; //Timer lenght in milliseconds
-      
+
         self.difficulty = document.getElementById("StyledSelect").options[document.getElementById("StyledSelect").selectedIndex].value;
         self.terminalT.innerHTML = self.currentTurn.toUpperCase() + ' is starting';
         // self.terminalT.innerHTML = self.timerIncrease;
@@ -46,84 +50,84 @@ var Chessboard = class Chessboard {
 
         this.createBoard(); // Creates gameboard
 
-        console.log(self.timerLenght);
-        this.startTimer(); // Starts timers
+        // this.startTimer(); // Starts timers
 
 
     }
     saveSettings() { // Once settings are saved, new values stored also to object.
-    self.timerLenght = document.getElementById("Timer").value  * 1000 * 60;
-    self.timerIncrease = document.getElementById("TimerIncrease").value * 1000;
-    self.difficulty = document.getElementById("StyledSelect").options[document.getElementById("StyledSelect").selectedIndex].value;
-    console.log("Settings saved. " + self.timerLenght + " " + self.timerIncrease + " " + self.difficulty);
+        self.timerLenght = document.getElementById("Timer").value * 1000 * 60;
+        self.timerIncrease = document.getElementById("TimerIncrease").value * 1000;
+        self.difficulty = document.getElementById("StyledSelect").options[document.getElementById("StyledSelect").selectedIndex].value;
+        console.log("Settings saved. " + self.timerLenght + " " + self.timerIncrease + " " + self.difficulty);
 
     }
-    startTimer(){
+    startTimer() {
         self = this;
-        
-        // self.terminalT.innerHTML = "hahahahah";
-       
-        self.ongoing = setInterval(function() {
-        var timer;
 
-          if (self.currentTurn == 'white'){ //Declare timer used based on current turn
-            timer = 'whiteTimer';
-          }
-          if (self.currentTurn == 'black'){
-            timer = 'blackTimer';
-          }
-          //Use names to point correct variables, code reuseability
+        //Start intervalfunction, executes once per 1000ms
+        self.ongoing = setInterval(function () {
+            var timer;
+
+            if (self.currentTurn == 'white') { //Declare timer used based on current turn
+                timer = 'whiteTimer';
+            }
+            if (self.currentTurn == 'black') {
+                timer = 'blackTimer';
+            }
+            //Use names to point correct variables, code reuseability
 
 
-          // Time calculations f, minutes and seconds
-          var hours = Math.floor((self[timer] % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          var minutes = Math.floor((self[timer] % (1000 * 60 * 60)) / (1000 * 60));
-          var seconds = Math.floor((self[timer] % (1000 * 60)) / 1000);
-        
-          //Add extra zero for short numbers
-            if (seconds.toString().length == 1){
+            // Time calculations f, minutes and seconds
+            var hours = Math.floor((self[timer] % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((self[timer] % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((self[timer] % (1000 * 60)) / 1000);
+
+            //Add extra zero for short numbers
+            if (seconds.toString().length == 1) {
                 seconds = "0" + seconds;
             }
-            if (minutes.toString().length == 1){
+            if (minutes.toString().length == 1) {
                 minutes = "0" + minutes;
             }
-           
-          // Display the result in the information terminal
-          document.getElementById("timerWindow").innerHTML =  hours + ":" + minutes + ":" + seconds;
-            
-          // If the count down is finished, game has ended
-          if (self[timer] <= 0) {
-            clearInterval(self.ongoing);
-            self.terminalT.innerHTML = "Your time has ended. Game lost.";
-            self.currentTurn = 'none';
-          }
-          if (self.gamestate == 'play'){ //Timer on, if game not paused
-            self[timer] = self[timer] - 1000; //Reduce time from correct timer
-          }
 
-          
+            // Display the result in the information terminal
+            document.getElementById("timerWindow").innerHTML = hours + ":" + minutes + ":" + seconds;
+
+            // If the count down is finished, game has ended
+            if (self[timer] <= 0) {
+                clearInterval(self.ongoing);
+                self.terminalT.innerHTML = "Your time has ended. Game lost.";
+                self.currentTurn = 'none';
+            }
+            if (self.gamestate == 'play') { //Timer on, if game not paused
+                self[timer] = self[timer] - 1000; //Reduce time from correct timer
+            }
+
+
         }, 1000);
     }
-    pauseTimer(){ // Method for pausing/unpausing timer 
+    pauseTimer() { // Method for pausing/unpausing timer 
         if (self.gamestate == 'play')
-        self.gamestate = 'paused';
+            self.gamestate = 'paused';
         else {
             self.gamestate = 'play';
         }
     }
     newGame() {
+        self = this
         //Let's remove all the pieces from the Chessboard. We have own function for it
         document.getElementsByClassName("piece").remove();
 
-        // addPieces();
-        this.createBoard();
+        this.addPieces(this.newGame_positions); // Fresh new game
         self.currentTurn = 'white';
-        clearInterval(self.ongoing); //Stop previous timer
+        if (self.ongoing)
+             clearInterval(self.ongoing); //Stop previous timer
         $('#timerWindow').removeClass('blackTimer'); // Correct color for timer
         self.whiteTimer = self.timerLenght;
         self.blackTimer = self.timerLenght;
         self.terminalT.innerHTML = self.currentTurn.toUpperCase() + ' is starting';
         this.startTimer(); // Starts timers
+        
     }
     createBoard() {
 
@@ -139,15 +143,15 @@ var Chessboard = class Chessboard {
             // console.log(square.style.width);
             square.classList.add('unselectable');
 
-
-            //  square.ondragover = stopDefault;
+            //Events for dragging pieces on squares
             square.ondragover = this.handleSquareDragOverDefault;
             square.ondragleave = this.handleSquareDragLeave;
             square.ondrop = this.handleSquareDragDrop;
+            square.onclick = this.handleSquareClick;
             var test = this.letters[i % 8] + (8 - parseInt(i / 8));
             square.id = test;
             /*Generating correct id for each square*/
-            // dragElement(test);
+       
             //Board has 64 childs: squares
             square.style.backgroundColor = parseInt((i / 8) + i)
                 % 2 == 0 ? 'white' : '#ababab';
@@ -161,10 +165,14 @@ var Chessboard = class Chessboard {
         }
         this.addPieces(this.newGame_positions); // Fresh new game
         document.getElementById("mainChessBoard").style.display = 'block';
+        self.currentTurn = 'None';
+        self.gamestate = 'paused';
+        document.getElementById("timerWindow").innerHTML = 0 + ":" + '00' + ":" + '00';
+        this.terminalT.innerHTML = 'Welcome to the Chess! Please, start a new game.'
 
     }
 
-    addPieces(positions) {
+    addPieces(positions) { //Add pieces to board, positions of pieces as argument
 
 
         //Images of pieces
@@ -213,7 +221,7 @@ var Chessboard = class Chessboard {
 
 
                 // var id = '#';
-               
+
                 var id = this.letters[i] + (x + 1); //Generate correct id by position for each square
                 // document.write(id);
                 var elem = document.createElement("img");
@@ -320,23 +328,27 @@ var Chessboard = class Chessboard {
 
 
 
-    handleSquareDragOverDefault() { //Just for coloring targeted square
-        if (!this.classList.contains("over")) {
+    handleSquareDragOverDefault() { //Just for coloring targeted square, default
+        if (!this.classList.contains("over") && self.gamestate == 'play') {
             this.classList.add('over');
         }
     }
 
-    handleSquareDragOver(e) {
+    handleSquareDragOver(e) { //Method for handling hover when target also dropable
         e = e || window.event;
         if (e.preventDefault) {
             e.preventDefault(); // Necessary. Allows us to drop.
+        }
+
+        if (!this.classList.contains("over") ) {
+            this.classList.add('over');
         }
 
         // this.classList.add('over');
 
     }
 
-    handleSquareDragLeave(e) {
+    handleSquareDragLeave(e) { //Remove hover effect after leaving hovered area
 
         this.classList.remove('over');
 
@@ -344,26 +356,79 @@ var Chessboard = class Chessboard {
 
     handleSquareDragDrop() {
         this.classList.remove('over'); // Remove 'over' effect from square
-     
+
 
     }
 
     dragElement(elmnt) { // Set different methods for different situations
         elmnt.ondragstart = this.elementDragStart.bind(this);
         elmnt.ondragend = this.elementDragEnd;
-        document.ondrop = this.closeDragElement;
-        elmnt.onclick = this.onElementclick.bind(this);    }
-    onElementclick(e){
-        console.log(e);
-        if( e.target.parentElement.classList.contains("legal")){
-            this.elementDragEnd();
-        }
-        else {
-        e.target.parentElement.classList.add('legal');
-        this.isLegalMove(e.target.parentElement, false);
-        }
+        document.ondrop = this.closeDragElement;   
     }
-    testclick(){
+ 
+    handleSquareClick(e) {  // Method for handling moves by click piece and wanted target.
+
+        // console.log(e);
+        if (e.target == self.clicked_piece) {
+            self.elementDragEnd(); //Clean moves if same piece clicked again
+            self.clicked_piece = null;
+            return;
+        }
+
+        if (e.target.classList.contains('piece') && e.target.getAttribute('side') == self.currentTurn) {
+            self.elementDragEnd(); // Clean previously clicked piece's legal moves
+            e.target.parentElement.classList.add('legal');
+            self.clicked_piece = e.target;
+            self.isLegalMove(e.target.parentElement, false);
+        }
+       
+
+            // console.log(self.clicked_piece);
+         else   if (e.target.classList.contains('legal') || e.target.parentElement.classList.contains('legal')) {
+
+                if (e.target.classList.contains('piece') ) {
+                    if (self.clicked_piece.getAttribute("side") != e.target.getAttribute("side")) {
+                        // console.log(e.target.children[0]);
+                        e.target.parentElement.appendChild(self.clicked_piece);
+                        e.target.remove(); // Remove captured piece
+
+                        self.elementDragEnd(); //Clean shown legal moves
+
+                    }
+                }
+                else {
+                    e.target.appendChild(self.clicked_piece);
+                  
+                    self.elementDragEnd(); // Clean shown legal moves
+                }
+
+                if (self.clicked_piece.getAttribute("side") == 'white') { //Changes turn
+                    self.whiteTimer = self.whiteTimer + self.timerIncrease; //Add more time to the timer at the end of the turn
+                    self.currentTurn = 'black';
+                    $('#timerWindow').addClass('blackTimer');
+                }
+                else {
+                    self.blackTimer = self.blackTimer + self.timerIncrease;
+                    self.currentTurn = 'white';
+                    $('#timerWindow').removeClass('blackTimer');
+                }
+
+                self.clicked_piece = null;
+                self.terminalT.innerHTML = self.currentTurn.toUpperCase() + ' TURN';
+                if (self.playingVS == 'computer'){
+                    self.computerMove();
+                }
+                self.isCheck();
+
+
+            }
+            else {
+                console.log('Opposite turn piece or empty square clicked withot legal class.');
+            }
+        
+
+    }
+    testclick() {
         self.terminalT.innerHTML = 'klikkasin';
     }
 
@@ -373,7 +438,7 @@ var Chessboard = class Chessboard {
         e = e || window.event;
         e.dataTransfer.setData("Text", e.target.id);
         e.dataTransfer.effectAllowed = "move";
-        this.isLegalMove(e.target.parentElement, false); // Check legal moves from starting position
+        self.isLegalMove(e.target.parentElement, false); // Check legal moves from starting position
 
     }
 
@@ -382,7 +447,7 @@ var Chessboard = class Chessboard {
 
         for (var i = 0; i < squares.length; i++) { //Reset allowed actions
 
-            squares[i].ondragover = this.handleSquareDragOverDefault
+            squares[i].ondragover = self.handleSquareDragOverDefault
             squares[i].classList.remove("legal");
             // console.log(squares[i].classList);
         }
@@ -402,7 +467,7 @@ var Chessboard = class Chessboard {
 
         if (e.target.id != (document.getElementById(data).id) && e.target.classList.contains("square")) {
             e.target.appendChild(document.getElementById(data));
-            
+
         }
         else if (e.target.getAttribute("side") != document.getElementById(data).getAttribute("side")) {
             e.target.parentElement.appendChild(document.getElementById(data));
@@ -410,64 +475,68 @@ var Chessboard = class Chessboard {
 
         }
 
-      
-    //    setTimeout(self.afterTwoSeconds, 2000);
-       if (document.getElementById(data).getAttribute("side") == 'white'){ //Changes turn
-        self.whiteTimer = self.whiteTimer + self.timerIncrease; //Add more time to the timer at the end of the turn
-        self.currentTurn = 'black';
-        $('#timerWindow').addClass('blackTimer');
+
+        //    setTimeout(self.afterTwoSeconds, 2000);
+        if (document.getElementById(data).getAttribute("side") == 'white') { //Changes turn
+            self.whiteTimer = self.whiteTimer + self.timerIncrease; //Add more time to the timer at the end of the turn
+            self.currentTurn = 'black';
+            $('#timerWindow').addClass('blackTimer');
+        }
+        else {
+            self.blackTimer = self.blackTimer + self.timerIncrease;
+            self.currentTurn = 'white';
+            $('#timerWindow').removeClass('blackTimer');
+        }
+        self.terminalT.innerHTML = self.currentTurn.toUpperCase() + ' TURN';
+        if (self.playingVS == 'computer'){
+            self.computerMove();
+        }
+        
+        self.isCheck();
     }
-    else {
-        self.blackTimer = self.blackTimer + self.timerIncrease;
-        self.currentTurn = 'white';
-        $('#timerWindow').removeClass('blackTimer');
-    }
-    self.terminalT.innerHTML = self.currentTurn.toUpperCase()+ ' TURN';
-    self.isCheck();
-    }
-   
-    
-    isCheck (){
+
+
+    isCheck() {
         var squares = document.getElementsByClassName("square");
         console.log(squares.length);
         var kingcounter = 0;
         var king;
         var i = 0;
-                while (kingcounter < 2) { //Reset allowed actions
-                    if(squares[i].hasChildNodes()){
-        
-                    if (squares[i].children[0].getAttribute("type") == 'king'   ){ 
-                        // console.log((squares[i].children[0].getAttribute("side")));
-                        // && squares[i].children[0].getAttribute("side") == this.currentTurn
-                        king = squares[i].children[0];
-                        console.log(king);
-                        this.isLegalMove(king.parentElement, true);
-                        kingcounter++;
-                    }
-              
+        while (kingcounter < 2) { //Reset allowed actions
+            if (squares[i].hasChildNodes()) {
+
+                if (squares[i].children[0].getAttribute("type") == 'king') {
+                    // console.log((squares[i].children[0].getAttribute("side")));
+                    // && squares[i].children[0].getAttribute("side") == this.currentTurn
+                    king = squares[i].children[0];
+                    console.log(king);
+                    this.isLegalMove(king.parentElement, true);
+                    kingcounter++;
                 }
-                i++;// console.log(squares[i].classList);
-                }
+
+            }
+            i++;// console.log(squares[i].classList);
+        }
 
 
     }
 
-    isLegalMove(e, testCheck) {
-        
+    isLegalMove(e, testCheck) { // This method allows legalization of moves. Allows only legal moves for user, and shows possible legal moves
+
         var startPosition;
 
         var new_horiz;
         var new_vert;
         var new_pos;
-        
-        
-      
+
+
+
 
         self = this // Bind this ChessBoard to variable self. Chessboard Methods usable with self variable, in case 'this' changes inside function
-       
+
         var piece_type = e.children[0].getAttribute("type");
         var side = e.children[0].getAttribute("side");
-        if (self.gamestate != 'play'){
+        if (self.gamestate != 'play') {
             self.terminalT.innerHTML = 'Game paused or ended. Unable to move pieces.';
             return 0;
         }
@@ -483,7 +552,7 @@ var Chessboard = class Chessboard {
         var loop_enabler = true; //Helps to reuse code of rook/bishop movetesters. While true, allows as to check as many squares as move is leag
         //By setting FALSE, only squares next to are checked. Ideal to king moveset
 
-        
+
 
 
         var i = 1;
@@ -501,29 +570,29 @@ var Chessboard = class Chessboard {
         self.skiprightdown = false;
         self.skipleftdown = false;
         self.skipleftup = false;
-       
+
         var isKingDanger = function (ce, cposition, type) { //Check legal positions and add css for marking
-            
-                        if (cposition != null && cposition.hasChildNodes()) { // Cases when there is already piece
-                            console.log(cposition.children[0].getAttribute("type")+type);
-                            if (cposition.children[0].getAttribute("side") != ce.children[0].getAttribute("side") && cposition.children[0].getAttribute("type") == type) {// If pieces are different color and movetable matches, it is check
-                                console.log('CHESS');
-                    
-                                self.terminalT.innerHTML = 'CHECK';
-                                 return true; // Returns true only, when there is piece 
-                             }
-                           
-                            // cposition.classList.add('legal');  //Show legal moves
-                            // cposition.ondragover = self.handleSquareDragOver; //Enable dropping
-                    
-                            // console.log(cposition.children[0].getAttribute("side"));
-                            // console.log(cposition.children[0].getAttribute("type"));
-                            return true;
-                          
-                            
-                        }
-                        return false;
-                    }
+
+            if (cposition != null && cposition.hasChildNodes()) { // Cases when there is already piece
+                console.log(cposition.children[0].getAttribute("type") + type);
+                if (cposition.children[0].getAttribute("side") != ce.children[0].getAttribute("side") && cposition.children[0].getAttribute("type") == type) {// If pieces are different color and movetable matches, it is check
+                    console.log('CHESS');
+
+                    self.terminalT.innerHTML = 'CHECK';
+                    return true; // Returns true only, when there is piece 
+                }
+
+                // cposition.classList.add('legal');  //Show legal moves
+                // cposition.ondragover = self.handleSquareDragOver; //Enable dropping
+
+                // console.log(cposition.children[0].getAttribute("side"));
+                // console.log(cposition.children[0].getAttribute("type"));
+                return true;
+
+
+            }
+            return false;
+        }
 
 
         var checkMove = function (ce, cposition) { //Check legal positions and add css for marking
@@ -531,7 +600,6 @@ var Chessboard = class Chessboard {
             if (cposition != null && !cposition.hasChildNodes()) { // Move is probably legal, if  there is no piece already
 
                 cposition.classList.add('legal');  //Show legal moves
-                cposition.onclick = self.testclick;
                 cposition.ondragover = self.handleSquareDragOver; //Enable dropping
                 return false;
             }
@@ -539,14 +607,14 @@ var Chessboard = class Chessboard {
                 // console.log(cposition.children[0].getAttribute("side"));
                 if (cposition.children[0].getAttribute("side") != ce.children[0].getAttribute("side")) {// If pieces are different color, move is probably legal{
                     cposition.classList.add('legal');
-                   
+
                     cposition.ondragover = self.handleSquareDragOver;
                 }
                 return true; // Returns true only, when there is piece 
             }
             return false;
         }
-       
+
         var changeCoord = function (horizontal, vertical, moveset, i, skip, type) { //Changes coordinate, checks state of new coordinate. Marks directions checked afterwards
 
 
@@ -610,18 +678,18 @@ var Chessboard = class Chessboard {
             if (position == null) { // Null means we are out of board
                 self[skip] = true; //Sets class parameter true by given variable name. Last legal move reached
             }
-            if (testCheck){
+            if (testCheck) {
 
                 // console.log(type);
 
 
-               if ( isKingDanger(e, position, type)){
+                if (isKingDanger(e, position, type)) {
                     self[skip] = true;
-                //    console.log("Check!");
-               }
+                    //    console.log("Check!");
+                }
 
             }
-            
+
             else if (checkMove(e, position)) { // True means, we have reached a piece. Legal move colored and allowed
                 self[skip] = true;
             }
@@ -703,7 +771,7 @@ var Chessboard = class Chessboard {
             } while (loop_enabler);
 
         }
-       
+
         var pawn_func = function (startNumber, moves, sideVar, moveNames) {
 
             if (current[1] == startNumber) {
@@ -739,7 +807,7 @@ var Chessboard = class Chessboard {
 
 
         }
-        var knight_func = function() {
+        var knight_func = function () {
             var knight_moves = {
                 upleft: [-1, 2],
                 upright: [1, 2],
@@ -750,7 +818,7 @@ var Chessboard = class Chessboard {
                 leftdown: [-2, -1],
                 leftup: [-2, 1]
             };
-            console.log(knight_moves);
+            // console.log(knight_moves);
             for (const i in knight_moves) {
                 try {
                     new_horiz = self.letters[self.letters.indexOf(horizontal) + knight_moves[i][0]]; //Viable horizontal position
@@ -818,13 +886,13 @@ var Chessboard = class Chessboard {
             bishop_func();
 
         }
-        
-    
+
+
 
     }
-    generateJSON (){ //Generates JSON file from current positions of the board
+    generateJSON() { //Generates JSON file from current positions of the board
 
-         //JSON is dynamic, contains only those what are left on chessboard
+        //JSON is dynamic, contains only those what are left on chessboard
         //Less data to transfer and to storage
         var positions = {
             white: {
@@ -832,55 +900,55 @@ var Chessboard = class Chessboard {
             black: {
             }
         }
-        var squares = document.getElementsByClassName("square");  
+        var squares = document.getElementsByClassName("square");
 
         for (var i = 0; i < squares.length; i++) { //Reset allowed actions
 
-            if (squares[i].hasChildNodes()){
-            var type =   squares[i].children[0].getAttribute("type"); 
-            
-            if (squares[i].children[0].getAttribute("side") == 'white'){
-                if (!([type] in positions.white)){
-                    //Create key to the object, if it is not yet there
-                    positions.white[type] = [squares[i].id];
+            if (squares[i].hasChildNodes()) {
+                var type = squares[i].children[0].getAttribute("type");
+
+                if (squares[i].children[0].getAttribute("side") == 'white') {
+                    if (!([type] in positions.white)) {
+                        //Create key to the object, if it is not yet there
+                        positions.white[type] = [squares[i].id];
+                    }
+                    else {
+                        //Append location to list, since piece was already in object
+                        positions.white[type].push(squares[i].id);
+                    }
+                }
+                else if (squares[i].children[0].getAttribute("side") == 'black') {
+                    if (!([type] in positions.black)) {
+                        //Create key to the object, if it is not yet there
+                        positions.black[type] = [squares[i].id];
+                    }
+                    else {
+                        //Append location to list, since piece was already in object
+                        positions.black[type].push(squares[i].id);
+                    }
                 }
                 else {
-                     //Append location to list, since piece was already in object
-                    positions.white[type].push(squares[i].id);
+                    console.log('Should not happen.');
                 }
-            }
-            else if (squares[i].children[0].getAttribute("side") == 'black'){
-                if (!([type] in positions.black)){
-                      //Create key to the object, if it is not yet there
-                    positions.black[type] = [squares[i].id];
-                }
-                else {
-                   //Append location to list, since piece was already in object
-                    positions.black[type].push(squares[i].id);
-                }
-            }
-            else {
-                console.log('Should not happen.');
-            }
 
             }
-           
+
 
         }
         // console.log(positions);
 
 
-    // console.log(positions.black.pawn);
+        // console.log(positions.black.pawn);
 
-    var boardJSON = JSON.stringify(positions);
-    localStorage.setItem("testJSON", boardJSON);
-    // window.location = boardJSON;
-    // console.log(boardJSON);
-    return boardJSON;
+        var boardJSON = JSON.stringify(positions);
+        localStorage.setItem("testJSON", boardJSON);
+        // window.location = boardJSON;
+        // console.log(boardJSON);
+        return boardJSON;
 
     }
 
-    computerMove(){
+    computerMove() {
         var player_data = this.generateJSON();
         // var computer_data = this.sendMoveJSON(player_data);
 
@@ -891,11 +959,21 @@ var Chessboard = class Chessboard {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             async: true,
-            success: function (rdata){
-                console.log(rdata);
-                
+            success: function (rdata) { // Move piece of computer
+                if (document.getElementById(rdata.destID).hasChildNodes())
+                {
+                    document.getElementById(rdata.destID).children[0].remove();
+                    document.getElementById(rdata.destID).appendChild(document.getElementById(rdata.sourceID).children[0]);
+                }
+                else {
+                    document.getElementById(rdata.destID).appendChild(document.getElementById(rdata.sourceID).children[0]);
+                }
+                self.currentTurn = 'white'; //Computer is always black
+                $('#timerWindow').removeClass('blackTimer');
+                self.terminalT.innerHTML = self.currentTurn.toUpperCase() + ' TURN';
+
             }
-            
+
 
 
         });

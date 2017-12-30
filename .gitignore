@@ -1,2 +1,6 @@
 
 \.idea/
+
+\.vscode/settings\.json
+
+*.pyc

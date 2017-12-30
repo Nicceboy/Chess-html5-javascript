@@ -452,24 +452,30 @@ img.resize {
 {
     float: left;
 
-    z-index: -1;
+    z-index: -2;
     border: 2px solid #8d7878;
 
 
 }
 .square.over {
-    border: 2px solid rgb(238, 191, 36) !important;
+    /* border: 2px solid red !important; */
+    background-color: red !important;
 }
 .square.legal {
     /* float:left; */
-    z-index: -1;
+    z-index: -2;
     /* width: 92px !important; */
     /* height: 92px !important; */
     /* padding: -1px !important; */
     /* margin: auto !important; */
     background-color: rgb(158, 158, 68) !important;
     border: 2px solid black !important;
+    cursor: pointer;
 
+}
+.square.over.legal{
+    border: 2px solid red !important;
+    background-color: green !important;
 }
 .piece {
 
@@ -478,7 +484,7 @@ img.resize {
     /*display: block;*/
     /* margin: auto; */
     position: absolute;
-    cursor: move;
+    cursor: pointer;
     /* display: inline; */
     /* text-align: center; */
     /* Make elements draggable in old WebKit */
@@ -501,7 +507,7 @@ img.resize {
 #bigterminal {
     display: block;
     width: 828px;
-    margin: 4vmax 0% 6px 35%;
+    margin: 2vmax 0% 6px 35%;
     /* width: 300px; */
     /* width : 20%; */
     border: 6px solid black;
@@ -595,6 +601,8 @@ img.resize {
     /* bottom: 10%; */
     /* left: 50%; */
     margin-left: 40px;
+    -webkit-animation: fadeOut 1s;
+    animation: fadeOut 1s;
 }
 
 /* Popup arrow */
@@ -625,4 +633,13 @@ img.resize {
 @keyframes fadeIn {
     from {opacity: 0;}
     to {opacity:1 ;}
+}
+@-webkit-keyframes fadeOut {
+    from {opacity: 1;} 
+    to {opacity: 0;}
+}
+
+@keyframes fadeOut {
+    from {opacity: 1;}
+    to {opacity:0 ;}
 }

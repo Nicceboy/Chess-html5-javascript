@@ -14,7 +14,6 @@ function ngameOpt(test) {
     // $(test).slideDown("slow");
 
     if ($(test).css("display") === "none") {
-        document.getElementById("myPopup").classList.remove('show');
         $(test).slideDown("slow");
         var sliders = document.getElementsByClassName('SliderPopUp');
         for (var i = 0; i < sliders.length; i++){ //Close all sliders
@@ -24,7 +23,6 @@ function ngameOpt(test) {
         // x.style.display = "block";
     } else {
         $(test).slideUp("slow");
-        document.getElementById("myPopup").classList.remove('show');
         var sliders = document.getElementsByClassName('SliderPopUp');//Close volume slider
         for (var i = 0; i < sliders.length; i++){
             sliders[i].classList.remove("show");
@@ -68,7 +66,6 @@ function closeNav() {
     if (!$(this).data('clicked')) {
         document.getElementById("mySidenav").style.left = "-200px";
         var sliders = document.getElementsByClassName('SliderPopUp');
-        document.getElementById("myPopup").classList.remove('show');
         for (var i = 0; i < sliders.length; i++){ //Close all sliders
             sliders[i].classList.remove("show");
         }
@@ -122,7 +119,7 @@ function save(){
     // console.log('saved');
     chesstable.saveSettings();
     document.getElementById("myPopup").classList.toggle('show');
-
+    setTimeout(togglePopUp, 4000);
 }
 function togglePopUp(){
 
@@ -148,8 +145,6 @@ else {
 
 
 var chesstable = new Chessboard(800, 800);
-
-chesstable.generateJSON();
 
 addSlider(); //Functionality of sliders
 
@@ -184,13 +179,12 @@ $( function() { //Special tooltiptext show-up. Themed and custom position. Using
      
   } );
 
-  $( function() { //Change look of default selectmenus with JQuery
-    $( "#savegameselect" ).selectmenu()
-    .addClass( "overflow" );
+//   $( function() { //Change look of default selectmenus with JQuery
+//     $( "#savegameselect" ).selectmenu()
+//     .addClass( "overflow" );
  
-    $( "#loadgameselect" ).selectmenu()
-    .addClass( "overflow" );
+//     $( "#loadgameselect" ).selectmenu()
+//     .addClass( "overflow" );
  
-  } );
+//   } );
 
-  chesstable.computerMove();
